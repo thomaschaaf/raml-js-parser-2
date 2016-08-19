@@ -540,10 +540,24 @@ export class BasicNodeBuilder implements hl.INodeBuilder{
                                                 var vl=actualValue[pos];
                                                 if (vl && p.nameId() == universes.Universe10.Response.properties.body.name) {
                                                     var exists=_.find(x.children(), x=>x.key() == vl);
+                                                    
+                                                    var originalParent: any = x;
 
-                                                    var mediaTypeSibling = _.find(x.children(), x=> {
+                                                    originalParent = (originalParent.originalNode && originalParent.originalNode()) || originalParent;
+                                                    originalParent = (originalParent.originalNode && originalParent.originalNode()) || originalParent;
+
+                                                    var mediaTypeSibling = _.find(x.children(), sibling => {
+                                                        var originalSibling: any = sibling;
+
+                                                        originalSibling = (originalSibling.originalNode && originalSibling.originalNode()) || originalSibling;
+                                                        originalSibling = (originalSibling.originalNode && originalSibling.originalNode()) || originalSibling;
+                                                        
+                                                        if(originalSibling.parent() !== originalParent) {
+                                                            return false;
+                                                        }
+                                                        
                                                         try {
-                                                            mediaTypeParser.parse(x.key());
+                                                            mediaTypeParser.parse(sibling.key());
 
                                                             return true;
                                                         } catch (exception) {
