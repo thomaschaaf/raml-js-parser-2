@@ -16,6 +16,8 @@ import universeHelpers=require("../tools/universeHelpers")
 import services=defs
 import ramlTypes=defs.rt;
 
+var mediaTypeParser = require("media-typer");
+
 type ASTNodeImpl=hlimpl.ASTNodeImpl;
 type ASTPropImpl=hlimpl.ASTPropImpl;
 class KeyMatcher{
@@ -538,7 +540,18 @@ export class BasicNodeBuilder implements hl.INodeBuilder{
                                                 var vl=actualValue[pos];
                                                 if (vl && p.nameId() == universes.Universe10.Response.properties.body.name) {
                                                     var exists=_.find(x.children(), x=>x.key() == vl);
-                                                    if (true) {
+
+                                                    var mediaTypeSibling = _.find(x.children(), x=> {
+                                                        try {
+                                                            mediaTypeParser.parse(x.key());
+
+                                                            return true;
+                                                        } catch (exception) {
+                                                            return false;
+                                                        }
+                                                    });
+
+                                                    if(!mediaTypeSibling) {
                                                         //we can create inherited node;
                                                         var pc = aNode.parent().definition().key();
                                                         var node = new hlimpl.ASTNodeImpl(x, aNode, <any> range, p);
