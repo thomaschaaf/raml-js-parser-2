@@ -542,20 +542,12 @@ export class BasicNodeBuilder implements hl.INodeBuilder{
                                                     var exists=_.find(x.children(), x=>x.key() == vl);
                                                     
                                                     var originalParent: any = x;
+                                                    
+                                                    while(originalParent.originalNode) {
+                                                        originalParent = originalParent.originalNode();
+                                                    }
 
-                                                    originalParent = (originalParent.originalNode && originalParent.originalNode()) || originalParent;
-                                                    originalParent = (originalParent.originalNode && originalParent.originalNode()) || originalParent;
-
-                                                    var mediaTypeSibling = _.find(x.children(), sibling => {
-                                                        var originalSibling: any = sibling;
-
-                                                        originalSibling = (originalSibling.originalNode && originalSibling.originalNode()) || originalSibling;
-                                                        originalSibling = (originalSibling.originalNode && originalSibling.originalNode()) || originalSibling;
-                                                        
-                                                        if(originalSibling.parent() !== originalParent) {
-                                                            return false;
-                                                        }
-                                                        
+                                                    var mediaTypeSibling = _.find(originalParent.children(), (sibling: any) => {
                                                         try {
                                                             mediaTypeParser.parse(sibling.key());
 
