@@ -32,17 +32,14 @@
         "types": {
           "type": "array",
           "items": {
-            "type": "object",
-            "additionalProperties": false,
-            "properties": {}
+              "$ref": "#/definitions/TypeDeclaration"
+            }
           }
         },
         "schemas": {
           "type": "array",
           "items": {
-            "type": "object",
-            "additionalProperties": false,
-            "properties": {}
+            "$ref": "#/definitions/TypeDeclaration"
           }
         },
         "resourceTypes": {
@@ -72,9 +69,7 @@
         "annotationTypes": {
           "type": "array",
           "items": {
-            "type": "object",
-            "additionalProperties": false,
-            "properties": {}
+            "$ref": "#/definitions/TypeDeclaration"
           }
         },
         "([a-zA-Z0-9_]+)": {
@@ -153,76 +148,7 @@
                   "methods": {
                     "type": "array",
                     "items": {
-                      "type": "object",
-                      "additionalProperties": false,
-                      "properties": {
-                        "method": {
-                          "type": "string"
-                        },
-                        "displayName": {
-                          "type": "string"
-                        },
-                        "parametrizedProperties": {
-                          "type": "object",
-                          "additionalProperties": false,
-                          "properties": {}
-                        },
-                        "body": {
-                          "type": "array",
-                          "items": {
-                            "type": "object",
-                            "additionalProperties": false,
-                            "properties": {}
-                          }
-                        },
-                        "protocols": {
-                          "type": "array",
-                          "items": {
-                            "type": "string"
-                          }
-                        },
-                        "is": { "$ref": "#/definitions/Library/traits" },
-                        "securedBy": {
-                          "type": "array",
-                          "items": {
-                            "type": "object",
-                            "additionalProperties": false,
-                            "properties": {}
-                          }
-                        },
-                        "description": {
-                          "type": "string"
-                        },
-                        "queryParameters": {
-                          "type": "array",
-                          "items": {
-                            "type": "object",
-                            "additionalProperties": false,
-                            "properties": {}
-                          }
-                        },
-                        "headers": {
-                          "type": "array",
-                          "items": {
-                            "type": "object",
-                            "additionalProperties": false,
-                            "properties": {}
-                          }
-                        },
-                        "queryString":{
-                          "type":"object",
-                          "additionalProperties": false,
-                          "properties": {}
-                        },
-                        "responses": {
-                          "type": "array",
-                          "items": {
-                            "type": "object",
-                            "additionalProperties": false,
-                            "properties": {}
-                          }
-                        }
-                      }
+                      "$ref": "#/definitions/Method"
                     }
                   },
                   "is": {
@@ -290,6 +216,31 @@
         }
       }
     },
+    "Operation": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "queryParameters":{
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/TypeDeclaration"
+          }
+        },
+        "headers": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/TypeDeclaration"
+          }
+        },
+        "queryString": {"$ref": "#/definitions/TypeDeclaration"},
+        "responses": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/Response"
+          }
+        }
+      }
+    },
     "MethodBase":{
       "type": "object",
       "additionalProperties": false,
@@ -300,12 +251,108 @@
              "$ref": "#/definitions/TypeDeclaration"
           }
         },
+        "protocols": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
         "description": {
           "type": "string"
         },
         "displayName": {
           "type": "string"
         }
+      }
+    },
+    "Method":{
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "method": {
+          "type": "string"
+        },
+        "displayName": {
+          "type": "string"
+        },
+        "parametrizedProperties": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {}
+        },
+        "body": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {}
+          }
+        },
+        "protocols": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "is": { "$ref": "#/definitions/Library/traits" },
+        "securedBy": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {}
+          }
+        },
+        "description": {
+          "type": "string"
+        },
+        "queryParameters": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {}
+          }
+        },
+        "headers": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {}
+          }
+        },
+        "queryString":{
+          "type":"object",
+          "additionalProperties": false,
+          "properties": {}
+        },
+        "responses": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {}
+          }
+        }
+      }
+    },
+    "Response": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "code": {
+          "type": "string"
+        },
+        "body":{
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/TypeDeclaration"
+          }
+        },
+        "description": {
+          "type": "string"
+        },
       }
     },
     "Uses": {
