@@ -1,372 +1,366 @@
 {
   "$schema": "http://json-schema.org/draft-04/schema#",
   "type": "object",
-  "title": "RAML1.0",
-  "additionalProperties": false,
-  "properties": {
-    "ramlVersion": {
-      "type": "string"
-    },
-    "type": {
-      "type": "string"
-    },
-    "specification": {
-      "type": "object",
-      "oneOf": [
-        {"$ref": "#/definitions/Library"},
-        {"$ref": "#/definitions/Api"}
-      ]
-    },
-    "errors": {
-      "type": "array",
-      "items": {}
-    }
-  },
+  "oneOf": [
+    {"$ref": "#/definitions/RAML10Api"},
+    {"$ref": "#/definitions/RAML10Library"},
+    {"$ref": "#/definitions/RAML10Extension"},
+    {"$ref": "#/definitions/RAML10Overlay"},
+    {"$ref": "#/definitions/RAML10TypeDeclaration"},
+    {"$ref": "#/definitions/RAML10SecurityScheme"},
+    {"$ref": "#/definitions/RAML10Trait"},
+    {"$ref": "#/definitions/RAML10ExampleSpec"},
+    {"$ref": "#/definitions/RAML10ResourceType"},
 
+    {"$ref": "#/definitions/RAML08"}
+  ],
   "definitions": {
-    "Library":{
-      "title": "Library",
-      "type": "object",
-      "additionalProperties": false,
+    "RAML10": {
       "properties": {
+        "ramlVersion": {
+          "type": "string",
+          "pattern": "RAML10"
+        },
+        "errors": {
+          "type": "array"
+        }
+      },
+      "additionalProperties": false
+    },
+    "RAML10Api": {
+      "type": "object",
+      "properties": {
+        "ramlVersion": {"$ref": "#/definitions/RAML10/properties/ramlVersion"},
+        "type": {
+          "type": "string",
+          "pattern": "Api"
+        },
+        "errors": {"$ref": "#/definitions/RAML10/properties/errors"},
+        "specification": {
+          "type": "object"
+        }
+      },
+      "required": ["ramlVersion", "type", "errors", "specification"],
+      "additionalProperties": false
+    },
+    "RAML10Library": {
+      "type": "object",
+      "properties": {
+        "ramlVersion": {"$ref": "#/definitions/RAML10/properties/ramlVersion"},
+        "type": {
+          "type": "string",
+          "pattern": "Library"
+        },
+        "errors": {"$ref": "#/definitions/RAML10/properties/errors"},
+        "specification": {
+          "type": "object",
+          "properties": {
+            "name": {
+              "type": "string"
+            },
+            "usage": {
+              "type": "string"
+            },
+            "annotations": {"$ref": "#/definitions/LibraryBase/properties/annotations"},
+            "uses": {"$ref": "#/definitions/LibraryBase/properties/uses"},
+            "types": {"$ref": "#/definitions/LibraryBase/properties/types"},
+            "resourceTypes": {"$ref": "#/definitions/LibraryBase/properties/resourceTypes"},
+            "traits": {"$ref": "#/definitions/LibraryBase/properties/traits"},
+            "securitySchemes": {"$ref": "#/definitions/LibraryBase/properties/securitySchemes"},
+            "annotationTypes": {"$ref": "#/definitions/LibraryBase/properties/annotationTypes"}
+          },
+          "additionalProperties": false
+        }
+      },
+      "required": ["ramlVersion", "type", "errors", "specification"],
+      "additionalProperties": false
+    },
+    "RAML10Extension": {
+      "type": "object",
+      "properties": {
+        "ramlVersion": {"$ref": "#/definitions/RAML10/properties/ramlVersion"},
+        "type": {
+          "type": "string",
+          "pattern": "Extension"
+        },
+        "errors": {"$ref": "#/definitions/RAML10/properties/errors"},
+        "specification": {
+          "type": "object"
+        }
+      },
+      "required": ["ramlVersion", "type", "errors", "specification"],
+      "additionalProperties": false
+    },
+    "RAML10Overlay": {
+      "type": "object",
+      "properties": {
+        "ramlVersion": {"$ref": "#/definitions/RAML10/properties/ramlVersion"},
+        "type": {
+          "type": "string",
+          "pattern": "Overlay"
+        },
+        "errors": {"$ref": "#/definitions/RAML10/properties/errors"},
+        "specification": {
+          "type": "object"
+        }
+      },
+      "required": ["ramlVersion", "type", "errors", "specification"],
+      "additionalProperties": false
+    },
+    "RAML10TypeDeclaration": {
+      "type": "object",
+      "properties": {
+        "ramlVersion": {"$ref": "#/definitions/RAML10/properties/ramlVersion"},
+        "type": {
+          "type": "string",
+          "enum": ["StringTypeDeclaration", "ObjectTypeDeclaration", "TypeDeclaration"]
+        },
+        "errors": {"$ref": "#/definitions/RAML10/properties/errors"},
+        "specification": {
+          "type": "object"
+        }
+      },
+      "required": ["ramlVersion", "type", "errors", "specification"],
+      "additionalProperties": false
+    },
+    "RAML10SecurityScheme": {
+      "type": "object",
+      "properties": {
+        "ramlVersion": {"$ref": "#/definitions/RAML10/properties/ramlVersion"},
+        "type": {
+          "type": "string",
+          "enum": ["SecurityScheme", "OAuth2SecurityScheme"]
+        },
+        "errors": {"$ref": "#/definitions/RAML10/properties/errors"},
+        "specification": {
+          "type": "object"
+        }
+      },
+      "required": ["ramlVersion", "type", "errors", "specification"],
+      "additionalProperties": false
+    },
+    "RAML10Trait": {
+      "type": "object",
+      "properties": {
+        "ramlVersion": {"$ref": "#/definitions/RAML10/properties/ramlVersion"},
+        "type": {
+          "type": "string",
+          "pattern": "Trait"
+        },
+        "errors": {"$ref": "#/definitions/RAML10/properties/errors"},
+        "specification": {
+          "type": "object"
+        }
+      },
+      "required": ["ramlVersion", "type", "errors", "specification"],
+      "additionalProperties": false
+    },
+    "RAML10ExampleSpec": {
+      "type": "object",
+      "properties": {
+        "ramlVersion": {"$ref": "#/definitions/RAML10/properties/ramlVersion"},
+        "type": {
+          "type": "string",
+          "pattern": "ExampleSpec"
+        },
+        "errors": {"$ref": "#/definitions/RAML10/properties/errors"},
+        "specification": {
+          "type": "object"
+        }
+      },
+      "required": ["ramlVersion", "type", "errors", "specification"],
+      "additionalProperties": false
+    },
+    "RAML10ResourceType": {
+      "type": "object",
+      "properties": {
+        "ramlVersion": {"$ref": "#/definitions/RAML10/properties/ramlVersion"},
+        "type": {
+          "type": "string",
+          "pattern": "ResourceType"
+        },
+        "errors": {"$ref": "#/definitions/RAML10/properties/errors"},
+        "specification": {
+          "type": "object"
+        }
+      },
+      "required": ["ramlVersion", "type", "errors", "specification"],
+      "additionalProperties": false
+    },
+
+    "LibraryBase": {
+      "type": "object",
+      "properties": {
+        "uses": {"$ref": "#/definitions/FragmentDeclaration/properties/uses"},
+        "annotations": {"$ref": "#/definitions/FragmentDeclaration/properties/annotations"},
+        "schemas": {
+          "type": "array"
+        },
         "types": {
           "type": "array",
           "items": {
-              "$ref": "#/definitions/TypeDeclaration"
+            "type": "object",
+            "patternProperties": {
+              "^[a-zA-Z0-9]+": {"$ref": "#/definitions/TypeDeclaration"}
             }
           }
         },
-        "schemas": {
-          "type": "array",
-          "items": {
-            "$ref": "#/definitions/TypeDeclaration"
-          }
-        },
         "resourceTypes": {
-          "type": "array",
-          "items": {
-            "type": "object",
-            "additionalProperties": false,
-            "properties": {}
-          }
+          "type": "array"
         },
         "traits": {
-          "type": "array",
-          "items": {
-            "type": "object",
-            "additionalProperties": false,
-            "properties": {}
-          }
+          "type": "array"
         },
         "securitySchemes": {
-          "type": "array",
-          "items": {
-            "type": "object",
-            "additionalProperties": false,
-            "properties": {}
-          }
+          "type": "array"
         },
         "annotationTypes": {
-          "type": "array",
-          "items": {
-            "$ref": "#/definitions/TypeDeclaration"
-          }
-        },
-        "([a-zA-Z0-9_]+)": {
-          "type": "array",
-          "items": {
-            "type": "object",
-            "additionalProperties": false,
-            "properties": {}
-          }
-        },
-        "uses":  { "$ref": "#/definitions/Uses" }
-      }
+          "type": "array"
+        }
+      },
+      "additionalProperties": false
     },
-    "Api": {
-      "title": "Api",
+    "Type": {
+      "oneOf": [
+        {"$ref": "#/definitions/TypeDeclaration"},
+        {"$ref": "#/definitions/ArrayTypeDeclaration"}
+      ]
+    },
+    "ArrayTypeDeclaration": {
       "type": "object",
-      "additionalProperties": false,
       "properties": {
-            "types": { "$ref": "#/definitions/Library/types" },
-            "schemas": { "$ref": "#/definitions/Library/schemas" },
-            "resourceTypes": { "$ref": "#/definitions/Library/resourceTypes" },
-            "traits": { "$ref": "#/definitions/Library/traits" },
-            "securitySchemes": { "$ref": "#/definitions/Library/securitySchemes" },
-            "annotationTypes": { "$ref": "#/definitions/Library/annotationTypes" },
-            "*[a-zA-Z0-9_]": { "$ref": "#/definitions/Library/*[a-zA-Z0-9_]" },
-            "uses": { "$ref": "#/definitions/Library/uses" },
-            "title": {
-              "type": "string",
-              "required": "true"
-            },
-            "description": {
-              "type": "string"
-            },
-            "version": {
-              "type": "string"
-            },
-            "baseUri": {
-              "type": "string"
-            },
-            "baseUriParameters": {
-              "type": "array",
-              "items": {
-                "type": "object",
-                "additionalProperties": false,
-                "properties": {}
-              }
-            },
-            "protocols": {
+        "annotations": {"$ref": "#/definitions/TypeDeclaration/properties/annotations"},
+        "name": {"$ref": "#/definitions/TypeDeclaration/properties/name"},
+        "required": {"$ref": "#/definitions/TypeDeclaration/properties/required"},
+        "displayName": {"$ref": "#/definitions/TypeDeclaration/properties/displayName"},
+        "type": {"$ref": "#/definitions/TypeDeclaration/properties/type"},
+        "facets": {"$ref": "#/definitions/TypeDeclaration/properties/facets"},
+        "example": {"$ref": "#/definitions/TypeDeclaration/properties/example"},
+        "structuredExample": {"$ref": "#/definitions/TypeDeclaration/properties/structuredExample"},
+        "__METADATA__": {"$ref": "#/definitions/TypeDeclaration/properties/__METADATA__"},
+        "items":  {
+          "oneOf": [
+            {"type": "string"},
+            {
               "type": "array",
               "items": {
                 "type": "string"
               }
-            },
-            "mediaType": {
-              "type": "array",
-              "items": {
-                "type": "object",
-                "additionalProperties": false,
-                "properties": {}
-              }
-            },
-            "securedBy": {
-              "type": "array",
-              "items": {
-                "type": "object",
-                "additionalProperties": false,
-                "properties": {}
-              }
-            },
-            "resources": {
-              "type": "array",
-              "items": {
-                "type": "object",
-                "additionalProperties": false,
-                "properties": {
-                  "methods": {
-                    "type": "array",
-                    "items": {
-                      "$ref": "#/definitions/Method"
-                    }
-                  },
-                  "is": {
-                    "type": "array",
-                    "items": {
-                      "type": "object",
-                      "additionalProperties": false,
-                      "properties": {}
-                    }
-                  },
-                  "type": {
-                    "type": "object",
-                    "additionalProperties": false,
-                    "properties": {}
-                  },
-                  "description": {
-                    "type": "string"
-                  },
-                  "securedBy": {
-                    "type": "array",
-                    "items": {
-                      "type": "object",
-                      "additionalProperties": false,
-                      "properties": {}
-                    }
-                  },
-                  "uriParameters": {
-                    "type": "array",
-                    "items": {
-                      "type": "object",
-                      "additionalProperties": false,
-                      "properties": {}
-                    }
-                  },
-                  "relativeUri": {
-                    "type": "string"
-                  },
-                  "displayName": {
-                    "type": "string"
-                  },
-                  "resources": { "$ref": "#/definitions/Api/resources" },
-                  "*[a-zA-Z0-9_]": { "$ref": "#/definitions/Library/*[a-zA-Z0-9_]" }
-                }
-              }
-            },
-            "documentation": {
-              "type": "array",
-              "items": {
-                "type": "object",
-                "additionalProperties": false,
-                "properties": {}
-              }
             }
-      }
+          ]
+        }
+      },
+      "required": ["name", "displayName", "type", "__METADATA__", "required", "items"],
+      "additionalProperties": false
     },
-    "Trait":{
+
+    "TypeDeclaration": {
       "type": "object",
-      "additionalProperties": false,
       "properties": {
+        "annotations": {"$ref": "#/definitions/Annotable/properties/annotations"},
         "name": {
           "type": "string"
         },
-        "usage": {
-          "type": "string"
-        }
-      }
-    },
-    "Operation": {
-      "type": "object",
-      "additionalProperties": false,
-      "properties": {
-        "queryParameters":{
-          "type": "array",
-          "items": {
-            "$ref": "#/definitions/TypeDeclaration"
-          }
-        },
-        "headers": {
-          "type": "array",
-          "items": {
-            "$ref": "#/definitions/TypeDeclaration"
-          }
-        },
-        "queryString": {"$ref": "#/definitions/TypeDeclaration"},
-        "responses": {
-          "type": "array",
-          "items": {
-            "$ref": "#/definitions/Response"
-          }
-        }
-      }
-    },
-    "MethodBase":{
-      "type": "object",
-      "additionalProperties": false,
-      "properties": {
-        "body":{
-          "type": "array",
-          "items": {
-             "$ref": "#/definitions/TypeDeclaration"
-          }
-        },
-        "protocols": {
-          "type": "array",
-          "items": {
-            "type": "string"
-          }
-        },
-        "description": {
-          "type": "string"
-        },
-        "displayName": {
-          "type": "string"
-        }
-      }
-    },
-    "Method":{
-      "type": "object",
-      "additionalProperties": false,
-      "properties": {
-        "method": {
-          "type": "string"
-        },
-        "displayName": {
-          "type": "string"
-        },
-        "parametrizedProperties": {
+        "properties": {
           "type": "object",
-          "additionalProperties": false,
-          "properties": {}
-        },
-        "body": {
-          "type": "array",
-          "items": {
-            "type": "object",
-            "additionalProperties": false,
-            "properties": {}
+          "patternProperties": {
+            "^[a-zA-Z0-9]+": {"$ref": "#/definitions/Type"}
           }
         },
-        "protocols": {
+        "required": {
+          "type": "boolean"
+        },
+        "displayName": {
+          "type": "string"
+        },
+        "type": {
           "type": "array",
           "items": {
             "type": "string"
           }
         },
-        "is": { "$ref": "#/definitions/Library/traits" },
-        "securedBy": {
-          "type": "array",
-          "items": {
-            "type": "object",
-            "additionalProperties": false,
-            "properties": {}
+        "facets": {
+          "type": "object",
+          "patternProperties": {
+            "^[a-zA-Z0-9]+": {"$ref": "#/definitions/Type"}
           }
         },
-        "description": {
+        "example": {
+          "type": ["object", "boolean", "number", "array"]
+        },
+        "structuredExample": {"$ref": "#/definitions/ExampleSpec10"},
+        "__METADATA__": {
+          "type": "object"
+        }
+      },
+      "required": ["name", "displayName", "type", "__METADATA__", "required"],
+      "additionalProperties": false
+    },
+
+    "FragmentDeclaration": {
+      "type": "object",
+      "properties": {
+        "uses": {
+          "type": "array",
+          "items": {"$ref": "#/definitions/UsesDeclaration"}
+        },
+        "annotations": {"$ref": "#/definitions/Annotable/properties/annotations"}
+      },
+      "additionalProperties": false
+    },
+
+    "UsesDeclaration": {
+      "type": "object",
+      "properties": {
+        "key": {
           "type": "string"
         },
-        "queryParameters": {
-          "type": "array",
-          "items": {
-            "type": "object",
-            "additionalProperties": false,
-            "properties": {}
-          }
+        "value": {
+          "type": "string"
+        }
+      },
+      "required": ["key", "value"],
+      "additionalProperties": false
+    },
+
+    "Annotable": {
+      "type": "object",
+      "properties": {
+        "annotations": {
+          "type": "object"
+        }
+      },
+      "additionalProperties": false
+    },
+
+    "ExampleSpec10": {
+      "type": "object",
+      "properties": {
+        "value": {
+          "type": "string"
         },
-        "headers": {
-          "type": "array",
-          "items": {
-            "type": "object",
-            "additionalProperties": false,
-            "properties": {}
-          }
+        "strict": {
+          "type": "boolean"
         },
-        "queryString":{
-          "type":"object",
-          "additionalProperties": false,
-          "properties": {}
+        "name": {
+          "type": ["string", "null"]
         },
-        "responses": {
-          "type": "array",
-          "items": {
-            "type": "object",
-            "additionalProperties": false,
-            "properties": {}
-          }
+        "structuredValue": {
+          "type": ["object", "boolean", "number", "array"]
+        }
+      },
+      "required": ["value", "strict", "name", "structuredValue"],
+      "additionalProperties": false
+    },
+
+    "RAML08": {
+      "type": "object",
+      "properties": {
+        "ramlVersion": {
+          "type": "string",
+          "pattern": "RAML08"
         }
       }
-    },
-    "Response": {
-      "type": "object",
-      "additionalProperties": false,
-      "properties": {
-        "code": {
-          "type": "string"
-        },
-        "body":{
-          "type": "array",
-          "items": {
-            "$ref": "#/definitions/TypeDeclaration"
-          }
-        },
-        "description": {
-          "type": "string"
-        },
-      }
-    },
-    "Uses": {
-      "type": "array",
-      "items": {
-        "type": "object",
-        "additionalProperties": false,
-        "properties": {}
-      }
-    },
-    "TypeDeclaration":{
-      "type": "object",
-      "additionalProperties": false,
-      "properties": {}
     }
   }
 }
