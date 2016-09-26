@@ -1,0 +1,325 @@
+{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "type": "object",
+  "title": "RAML1.0",
+  "additionalProperties": false,
+  "properties": {
+    "ramlVersion": {
+      "type": "string"
+    },
+    "type": {
+      "type": "string"
+    },
+    "specification": {
+      "type": "object",
+      "oneOf": [
+        {"$ref": "#/definitions/Library"},
+        {"$ref": "#/definitions/Api"}
+      ]
+    },
+    "errors": {
+      "type": "array",
+      "items": {}
+    }
+  },
+
+  "definitions": {
+    "Library":{
+      "title": "Library",
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "types": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {}
+          }
+        },
+        "schemas": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {}
+          }
+        },
+        "resourceTypes": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {}
+          }
+        },
+        "traits": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {}
+          }
+        },
+        "securitySchemes": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {}
+          }
+        },
+        "annotationTypes": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {}
+          }
+        },
+        "([a-zA-Z0-9_]+)": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {}
+          }
+        },
+        "uses":  { "$ref": "#/definitions/Uses" }
+      }
+    },
+    "Api": {
+      "title": "Api",
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+            "types": { "$ref": "#/definitions/Library/types" },
+            "schemas": { "$ref": "#/definitions/Library/schemas" },
+            "resourceTypes": { "$ref": "#/definitions/Library/resourceTypes" },
+            "traits": { "$ref": "#/definitions/Library/traits" },
+            "securitySchemes": { "$ref": "#/definitions/Library/securitySchemes" },
+            "annotationTypes": { "$ref": "#/definitions/Library/annotationTypes" },
+            "*[a-zA-Z0-9_]": { "$ref": "#/definitions/Library/*[a-zA-Z0-9_]" },
+            "uses": { "$ref": "#/definitions/Library/uses" },
+            "title": {
+              "type": "string",
+              "required": "true"
+            },
+            "description": {
+              "type": "string"
+            },
+            "version": {
+              "type": "string"
+            },
+            "baseUri": {
+              "type": "string"
+            },
+            "baseUriParameters": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "additionalProperties": false,
+                "properties": {}
+              }
+            },
+            "protocols": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            },
+            "mediaType": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "additionalProperties": false,
+                "properties": {}
+              }
+            },
+            "securedBy": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "additionalProperties": false,
+                "properties": {}
+              }
+            },
+            "resources": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "additionalProperties": false,
+                "properties": {
+                  "methods": {
+                    "type": "array",
+                    "items": {
+                      "type": "object",
+                      "additionalProperties": false,
+                      "properties": {
+                        "method": {
+                          "type": "string"
+                        },
+                        "displayName": {
+                          "type": "string"
+                        },
+                        "parametrizedProperties": {
+                          "type": "object",
+                          "additionalProperties": false,
+                          "properties": {}
+                        },
+                        "body": {
+                          "type": "array",
+                          "items": {
+                            "type": "object",
+                            "additionalProperties": false,
+                            "properties": {}
+                          }
+                        },
+                        "protocols": {
+                          "type": "array",
+                          "items": {
+                            "type": "string"
+                          }
+                        },
+                        "is": { "$ref": "#/definitions/Library/traits" },
+                        "securedBy": {
+                          "type": "array",
+                          "items": {
+                            "type": "object",
+                            "additionalProperties": false,
+                            "properties": {}
+                          }
+                        },
+                        "description": {
+                          "type": "string"
+                        },
+                        "queryParameters": {
+                          "type": "array",
+                          "items": {
+                            "type": "object",
+                            "additionalProperties": false,
+                            "properties": {}
+                          }
+                        },
+                        "headers": {
+                          "type": "array",
+                          "items": {
+                            "type": "object",
+                            "additionalProperties": false,
+                            "properties": {}
+                          }
+                        },
+                        "queryString":{
+                          "type":"object",
+                          "additionalProperties": false,
+                          "properties": {}
+                        },
+                        "responses": {
+                          "type": "array",
+                          "items": {
+                            "type": "object",
+                            "additionalProperties": false,
+                            "properties": {}
+                          }
+                        }
+                      }
+                    }
+                  },
+                  "is": {
+                    "type": "array",
+                    "items": {
+                      "type": "object",
+                      "additionalProperties": false,
+                      "properties": {}
+                    }
+                  },
+                  "type": {
+                    "type": "object",
+                    "additionalProperties": false,
+                    "properties": {}
+                  },
+                  "description": {
+                    "type": "string"
+                  },
+                  "securedBy": {
+                    "type": "array",
+                    "items": {
+                      "type": "object",
+                      "additionalProperties": false,
+                      "properties": {}
+                    }
+                  },
+                  "uriParameters": {
+                    "type": "array",
+                    "items": {
+                      "type": "object",
+                      "additionalProperties": false,
+                      "properties": {}
+                    }
+                  },
+                  "relativeUri": {
+                    "type": "string"
+                  },
+                  "displayName": {
+                    "type": "string"
+                  },
+                  "resources": { "$ref": "#/definitions/Api/resources" },
+                  "*[a-zA-Z0-9_]": { "$ref": "#/definitions/Library/*[a-zA-Z0-9_]" }
+                }
+              }
+            },
+            "documentation": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "additionalProperties": false,
+                "properties": {}
+              }
+            }
+      }
+    },
+    "Trait":{
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "name": {
+          "type": "string"
+        },
+        "usage": {
+          "type": "string"
+        }
+      }
+    },
+    "MethodBase":{
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "body":{
+          "type": "array",
+          "items": {
+             "$ref": "#/definitions/TypeDeclaration"
+          }
+        },
+        "description": {
+          "type": "string"
+        },
+        "displayName": {
+          "type": "string"
+        }
+      }
+    },
+    "Uses": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {}
+      }
+    },
+    "TypeDeclaration":{
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {}
+    }
+  }
+}
