@@ -684,12 +684,29 @@
       "type": "object",
       "properties": {
         "annotations": {
-          "type": "object"
+          "type": "object",
+          "patternProperties": {
+            "^[a-zA-Z0-9]+": {"$ref": "#/definitions/AnnotationReference"}
+          }
         },
         "scalarsAnnotations": {
           "type": "object"
         }
       },
+      "additionalProperties": false
+    },
+
+    "AnnotationReference": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string"
+        },
+        "structuredValue": {
+          "type": ["object", "string", "boolean", "number", "array"]
+        }
+      },
+      "required": ["name", "structuredValue"],
       "additionalProperties": false
     },
 
