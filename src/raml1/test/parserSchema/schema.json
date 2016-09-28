@@ -224,7 +224,8 @@
           "type": "object"
         },
         "resources": {
-          "type": "array"
+          "type": "array",
+          "items": {"$ref": "#/definitions/Resource10"}
         },
         "protocols": {
           "type": "array",
@@ -329,6 +330,7 @@
         "facets": {"$ref": "#/definitions/TypeDeclaration/properties/facets"},
         "xml": {"$ref": "#/definitions/TypeDeclaration/properties/xml"},
         "example": {"$ref": "#/definitions/TypeDeclaration/properties/example"},
+        "examples": {"$ref": "#/definitions/TypeDeclaration/properties/examples"},
         "uniqueItems": {
           "type": "boolean"
         },
@@ -374,7 +376,6 @@
         "example": {
           "type": "string"
         },
-
         "structuredExample": {"$ref": "#/definitions/TypeDeclaration/properties/structuredExample"},
         "allowedTargets": {"$ref": "#/definitions/TypeDeclaration/properties/allowedTargets"},
         "__METADATA__": {"$ref": "#/definitions/TypeDeclaration/properties/__METADATA__"}
@@ -441,6 +442,9 @@
           "type": "number"
         },
         "maximum": {
+          "type": "number"
+        },
+        "default": {
           "type": "number"
         },
         "example": {
@@ -704,17 +708,6 @@
       "additionalProperties": false
     },
 
-    "Resource10": {
-      "type": "object",
-      "properties": {
-        "name": {"$ref": "#/definitions/ResourceBase10/properties/name"},
-        "displayName": {"$ref": "#/definitions/ResourceBase10/properties/displayName"},
-        "annotations": {"$ref": "#/definitions/ResourceBase10/properties/annotations"},
-        "scalarsAnnotations": {"$ref": "#/definitions/ResourceBase10/properties/scalarsAnnotations"}
-      },
-      "additionalProperties": false,
-      "required": ["name", "displayName"]
-    },
     "ResourceRef10": {
       "oneOf": [
         {
@@ -746,7 +739,7 @@
               "type": "object",
               "patternProperties": {
                 "^[a-zA-Z0-9]+": {
-                  "type": "string"
+                  "type": ["string", "object", "number", "boolean"]
                 }
               }
             }
@@ -754,13 +747,16 @@
         }
       ]
     },
+    "SecurityScheme10": {
+      "type": "object"
+    },
     "SecuritySchemeRef10": {
       "oneOf": [
         {
-          "type": "string"
-        },{
-          "type": "object"
-        }]
+          "type": ["string", "null"]
+        },
+        {"$ref": "#/definitions/SecurityScheme10"}
+      ]
     },
     "Response10": {
       "type": "object",
@@ -795,6 +791,8 @@
         "responses": {"$ref": "#/definitions/MethodBase10/properties/responses"},
         "headers": {"$ref": "#/definitions/MethodBase10/properties/headers"},
         "queryParameters": {"$ref": "#/definitions/MethodBase10/properties/queryParameters"},
+        "queryString" : {"$ref": "#/definitions/MethodBase10/properties/queryString"},
+        "protocols": {"$ref": "#/definitions/MethodBase10/properties/protocols"},
         "securedBy": {"$ref": "#/definitions/MethodBase10/properties/securedBy"},
         "description": {"$ref": "#/definitions/MethodBase10/properties/description"},
         "is": {"$ref": "#/definitions/MethodBase10/properties/is"},
@@ -815,7 +813,13 @@
         "responses": {"$ref": "#/definitions/Operation10/properties/responses"},
         "headers": {"$ref": "#/definitions/Operation10/properties/headers"},
         "queryParameters": {"$ref": "#/definitions/Operation10/properties/queryParameters"},
-        "__METADATA__": {"$ref": "#/definitions/Operation10/properties/__METADATA__"},
+        "queryString" : {"$ref": "#/definitions/Operation10/properties/queryString"},
+        "protocols": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
         "securedBy": {
           "type": "array",
           "items": {"$ref": "#/definitions/SecuritySchemeRef10"}
@@ -832,7 +836,8 @@
         },
         "description": {
           "type": "string"
-        }
+        },
+        "__METADATA__": {"$ref": "#/definitions/Operation10/properties/__METADATA__"}
       },
       "additionalProperties": false
     },
@@ -859,16 +864,56 @@
             "^[a-zA-Z0-9]+": {"$ref": "#/definitions/TypeReference10"}
           }
         },
+        "queryString": {"$ref": "#/definitions/Type"},
         "__METADATA__": {
           "type": "object"
         }
       },
       "additionalProperties": false
     },
+    "Resource10": {
+      "type": "object",
+      "properties": {
+        "displayName": {"$ref": "#/definitions/ResourceBase10/properties/displayName"},
+        "annotations": {"$ref": "#/definitions/ResourceBase10/properties/annotations"},
+        "scalarsAnnotations": {"$ref": "#/definitions/ResourceBase10/properties/scalarsAnnotations"},
+        "description": {"$ref": "#/definitions/ResourceBase10/properties/description"},
+        "type": {"$ref": "#/definitions/ResourceBase10/properties/type"},
+        "securedBy": {"$ref": "#/definitions/ResourceBase10/properties/securedBy"},
+        "is": {"$ref": "#/definitions/ResourceBase10/properties/is"},
+        "uriParameters": {
+          "type": "object",
+          "patternProperties": {
+            "^[a-zA-Z0-9]+": {"$ref": "#/definitions/TypeReference10"}
+          }
+        },
+        "resources": {
+          "type": "array",
+          "items": {"$ref": "#/definitions/Resource10"}
+        },
+        "methods": {
+          "type": "array",
+          "items": {"$ref": "#/definitions/ResourceBase10/properties/methods"}
+        },
+        "relativeUri": {
+          "type": "string"
+        },
+        "relativeUriPathSegments": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "__METADATA__": {"$ref": "#/definitions/ResourceBase10/properties/__METADATA__"}
+      },
+      "additionalProperties": false,
+      "required": ["displayName", "relativeUri", "relativeUriPathSegments"]
+    },
     "ResourceType10": {
       "type": "object",
       "properties": {
         "name": {"$ref": "#/definitions/ResourceBase10/properties/name"},
+        "description": {"$ref": "#/definitions/ResourceBase10/properties/description"},
         "annotations": {"$ref": "#/definitions/ResourceBase10/properties/annotations"},
         "securedBy": {"$ref": "#/definitions/ResourceBase10/properties/securedBy"},
         "is": {"$ref": "#/definitions/ResourceBase10/properties/is"},
@@ -877,7 +922,6 @@
         "usage": {
           "type": "string"
         },
-        "description": {"$ref": "#/definitions/ResourceBase10/properties/description"},
         "__METADATA__": {"$ref": "#/definitions/ResourceBase10/properties/__METADATA__"}
       },
       "patternProperties": {
@@ -948,7 +992,7 @@
           "type": "string"
         },
         "structuredValue": {
-          "type": ["object", "string", "boolean", "number", "array"]
+          "type": ["object", "string", "boolean", "number", "array", "null"]
         }
       },
       "required": ["name", "structuredValue"],
@@ -976,10 +1020,10 @@
         "annotations": {"$ref": "#/definitions/Annotable/properties/annotations"},
         "scalarsAnnotations": {"$ref": "#/definitions/Annotable/properties/scalarsAnnotations"},
         "structuredValue": {
-          "type": ["object", "boolean", "string", "number", "array"]
+          "type": ["object", "boolean", "string", "number", "array", "null"]
         }
       },
-      "required": ["value", "strict", "structuredValue"],
+      "required": ["value", "strict"],
       "additionalProperties": false
     },
     "Documentation": {
