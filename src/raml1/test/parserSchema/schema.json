@@ -284,7 +284,13 @@
           }
         },
         "traits": {
-          "type": "array"
+          "type": "array",
+          "items": {
+            "type": "object",
+            "patternProperties": {
+              "^[a-zA-Z0-9]+": {"$ref": "#/definitions/Trait10"}
+            }
+          }
         },
         "securitySchemes": {
           "type": "array"
@@ -739,7 +745,7 @@
               "type": "object",
               "patternProperties": {
                 "^[a-zA-Z0-9]+": {
-                  "type": ["string", "object", "number", "boolean"]
+
                 }
               }
             }
@@ -782,6 +788,32 @@
       },
       "additionalProperties": false,
       "required": ["code"]
+    },
+    "Trait10": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string"
+        },
+        "displayName": {
+          "type": "string"
+        },
+        "description": {"$ref": "#/definitions/MethodBase10/properties/description"},
+        "usage": {
+          "type": "string"
+        },
+        "annotations": {"$ref": "#/definitions/MethodBase10/properties/annotations"},
+        "scalarsAnnotations": {"$ref": "#/definitions/MethodBase10/properties/scalarsAnnotations"},
+        "responses": {"$ref": "#/definitions/MethodBase10/properties/responses"},
+        "headers": {"$ref": "#/definitions/MethodBase10/properties/headers"},
+        "queryParameters": {"$ref": "#/definitions/MethodBase10/properties/queryParameters"},
+        "protocols": {"$ref": "#/definitions/MethodBase10/properties/protocols"},
+        "securedBy": {"$ref": "#/definitions/MethodBase10/properties/securedBy"},
+        "body": {"$ref": "#/definitions/MethodBase10/properties/body"},
+        "__METADATA__": {"$ref": "#/definitions/MethodBase10/properties/__METADATA__"}
+      },
+      "additionalProperties": false,
+      "required": ["name"]
     },
     "Method10": {
       "type": "object",
