@@ -712,8 +712,8 @@
         "annotations": {"$ref": "#/definitions/ResourceBase10/properties/annotations"},
         "scalarsAnnotations": {"$ref": "#/definitions/ResourceBase10/properties/scalarsAnnotations"}
       },
-      "required": ["name", "displayName"],
-      "additionalProperties": false
+      "additionalProperties": false,
+      "required": ["name", "displayName"]
     },
     "ResourceRef10": {
       "oneOf": [
@@ -762,14 +762,108 @@
           "type": "object"
         }]
     },
+    "Response10": {
+      "type": "object",
+      "properties": {
+        "annotations": {"$ref": "#/definitions/Annotable/properties/annotations"},
+        "scalarsAnnotations": {"$ref": "#/definitions/Annotable/properties/scalarsAnnotations"},
+        "description": {
+          "type": "string"
+        },
+        "headers": {
+          "type": "array",
+          "items": {"$ref": "#/definitions/Type"}
+        },
+        "body": {
+          "type": "object",
+          "patternProperties": {
+            "^[a-zA-Z0-9]+": {"$ref": "#/definitions/TypeReference10"}
+          }
+        },
+        "code": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": false,
+      "required": ["code"]
+    },
     "Method10": {
-      "type": "object"
+      "type": "object",
+      "properties": {
+        "annotations": {"$ref": "#/definitions/MethodBase10/properties/annotations"},
+        "scalarsAnnotations": {"$ref": "#/definitions/MethodBase10/properties/scalarsAnnotations"},
+        "responses": {"$ref": "#/definitions/MethodBase10/properties/responses"},
+        "headers": {"$ref": "#/definitions/MethodBase10/properties/headers"},
+        "queryParameters": {"$ref": "#/definitions/MethodBase10/properties/queryParameters"},
+        "securedBy": {"$ref": "#/definitions/MethodBase10/properties/securedBy"},
+        "description": {"$ref": "#/definitions/MethodBase10/properties/description"},
+        "is": {"$ref": "#/definitions/MethodBase10/properties/is"},
+        "body": {"$ref": "#/definitions/MethodBase10/properties/body"},
+        "method": {
+          "type": "string"
+        },
+        "__METADATA__": {"$ref": "#/definitions/MethodBase10/properties/__METADATA__"}
+      },
+      "additionalProperties": false,
+      "require": ["method"]
     },
     "MethodBase10": {
-      "type": "object"
+      "type": "object",
+      "properties": {
+        "annotations": {"$ref": "#/definitions/Operation10/properties/annotations"},
+        "scalarsAnnotations": {"$ref": "#/definitions/Operation10/properties/scalarsAnnotations"},
+        "responses": {"$ref": "#/definitions/Operation10/properties/responses"},
+        "headers": {"$ref": "#/definitions/Operation10/properties/headers"},
+        "queryParameters": {"$ref": "#/definitions/Operation10/properties/queryParameters"},
+        "__METADATA__": {"$ref": "#/definitions/Operation10/properties/__METADATA__"},
+        "securedBy": {
+          "type": "array",
+          "items": {"$ref": "#/definitions/SecuritySchemeRef10"}
+        },
+        "is": {
+          "type": "array",
+          "items":{"$ref": "#/definitions/TraitRef10"}
+        },
+        "body": {
+          "type": "object",
+          "patternProperties": {
+            "^[a-zA-Z0-9]+": {"$ref": "#/definitions/TypeReference10"}
+          }
+        },
+        "description": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": false
     },
     "Operation10": {
-      "type": "object"
+      "type": "object",
+      "properties": {
+        "annotations": {"$ref": "#/definitions/Annotable/properties/annotations"},
+        "scalarsAnnotations": {"$ref": "#/definitions/Annotable/properties/scalarsAnnotations"},
+        "responses": {
+          "type": "object",
+          "patternProperties": {
+            "^[a-zA-Z0-9]+": {"$ref": "#/definitions/Response10"}
+          }
+        },
+        "headers": {
+          "type": "object",
+          "patternProperties": {
+            "^[a-zA-Z0-9]+": {"$ref": "#/definitions/TypeReference10"}
+          }
+        },
+        "queryParameters": {
+          "type": "object",
+          "patternProperties": {
+            "^[a-zA-Z0-9]+": {"$ref": "#/definitions/TypeReference10"}
+          }
+        },
+        "__METADATA__": {
+          "type": "object"
+        }
+      },
+      "additionalProperties": false
     },
     "ResourceType10": {
       "type": "object",
