@@ -274,7 +274,13 @@
           }
         },
         "resourceTypes": {
-          "type": "array"
+          "type": "array",
+          "items": {
+            "type": "object",
+            "patternProperties": {
+              "^[a-zA-Z0-9]+": {"$ref": "#/definitions/ResourceType10"}
+            }
+          }
         },
         "traits": {
           "type": "array"
@@ -698,6 +704,127 @@
       "additionalProperties": false
     },
 
+    "Resource10": {
+      "type": "object",
+      "properties": {
+        "name": {"$ref": "#/definitions/ResourceBase10/properties/name"},
+        "displayName": {"$ref": "#/definitions/ResourceBase10/properties/displayName"},
+        "annotations": {"$ref": "#/definitions/ResourceBase10/properties/annotations"},
+        "scalarsAnnotations": {"$ref": "#/definitions/ResourceBase10/properties/scalarsAnnotations"}
+      },
+      "required": ["name", "displayName"],
+      "additionalProperties": false
+    },
+    "ResourceRef10": {
+      "oneOf": [
+        {
+          "type": "string"
+        }, {
+          "type": "object",
+          "patternProperties": {
+            "^[a-zA-Z0-9]+": {
+              "type": "object",
+              "patternProperties": {
+                "^[a-zA-Z0-9]+": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      ]
+    },
+    "TraitRef10": {
+      "oneOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "object",
+          "patternProperties": {
+            "^[a-zA-Z0-9]+": {
+              "type": "object",
+              "patternProperties": {
+                "^[a-zA-Z0-9]+": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      ]
+    },
+    "SecuritySchemeRef10": {
+      "oneOf": [
+        {
+          "type": "string"
+        },{
+          "type": "object"
+        }]
+    },
+    "Method10": {
+      "type": "object"
+    },
+    "MethodBase10": {
+      "type": "object"
+    },
+    "Operation10": {
+      "type": "object"
+    },
+    "ResourceType10": {
+      "type": "object",
+      "properties": {
+        "name": {"$ref": "#/definitions/ResourceBase10/properties/name"},
+        "annotations": {"$ref": "#/definitions/ResourceBase10/properties/annotations"},
+        "securedBy": {"$ref": "#/definitions/ResourceBase10/properties/securedBy"},
+        "is": {"$ref": "#/definitions/ResourceBase10/properties/is"},
+        "type": {"$ref": "#/definitions/ResourceBase10/properties/type"},
+        "scalarsAnnotations": {"$ref": "#/definitions/ResourceBase10/properties/scalarsAnnotations"},
+        "usage": {
+          "type": "string"
+        },
+        "description": {"$ref": "#/definitions/ResourceBase10/properties/description"},
+        "__METADATA__": {"$ref": "#/definitions/ResourceBase10/properties/__METADATA__"}
+      },
+      "patternProperties": {
+        "^(get|post|delete|put|patch|options)?$": {"$ref": "#/definitions/ResourceBase10/properties/methods"}
+      },
+      "required": ["name"],
+      "additionalProperties": false
+    },
+
+    "ResourceBase10": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string"
+        },
+        "displayName": {
+          "type": "string"
+        },
+        "methods": {"$ref": "#/definitions/Method10"},
+        "annotations": {"$ref": "#/definitions/Annotable/properties/annotations"},
+        "scalarsAnnotations": {"$ref": "#/definitions/Annotable/properties/scalarsAnnotations"},
+        "description": {
+          "type": "string"
+        },
+        "is": {
+          "type": "array",
+          "items":{"$ref": "#/definitions/TraitRef10"}
+        },
+        "type": {"$ref": "#/definitions/ResourceRef10"},
+        "securedBy": {
+          "type": "array",
+          "items": {"$ref": "#/definitions/SecuritySchemeRef10"}
+        },
+        "__METADATA__": {
+          "type": "object"
+        }
+      },
+      "required": ["name"],
+      "additionalProperties": false
+    },
+
     "Annotable": {
       "type": "object",
       "properties": {
@@ -708,7 +835,13 @@
           }
         },
         "scalarsAnnotations": {
-          "type": "object"
+          "type": "object",
+          "patternProperties": {
+            "^[a-zA-Z0-9]+": {
+              "type": "array",
+              "items": {"$ref": "#/definitions/AnnotationInstance"}
+            }
+          }
         }
       },
       "additionalProperties": false
