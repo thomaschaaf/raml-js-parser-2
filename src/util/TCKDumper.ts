@@ -166,6 +166,17 @@ export class TCKDumper {
                     result.type = definition.nameId();
                 }
                 result.specification = obj;
+                
+                var cleanUses = (name: string) => {
+                    obj && obj[name] && obj[name] && obj[name].forEach(item => {
+                        var key = Object.keys(item)[0];
+                        
+                        delete item[key]["uses"];
+                    })
+                }
+
+                cleanUses("types");
+                
                 result.errors = this.dumpErrors(basicNode.errors());
             }
             else {

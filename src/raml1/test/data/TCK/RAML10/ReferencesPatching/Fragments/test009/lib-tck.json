@@ -72,12 +72,6 @@
               }
             }
           },
-          "uses": [
-            {
-              "key": "lib",
-              "value": "../lib.raml"
-            }
-          ],
           "__METADATA__": {
             "primitiveValuesMeta": {
               "displayName": {
