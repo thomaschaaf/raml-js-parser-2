@@ -283,7 +283,13 @@
           "type": "array"
         },
         "annotationTypes": {
-          "type": "array"
+          "type": "array",
+          "items": {
+            "type": "object",
+            "patternProperties": {
+              "^[a-zA-Z0-9]+": {"$ref": "#/definitions/Type"}
+            }
+          }
         }
       },
       "additionalProperties": false
@@ -330,6 +336,7 @@
           "type": "array"
         },
         "structuredExample": {"$ref": "#/definitions/TypeDeclaration/properties/structuredExample"},
+        "allowedTargets": {"$ref": "#/definitions/TypeDeclaration/properties/allowedTargets"},
         "__METADATA__": {"$ref": "#/definitions/TypeDeclaration/properties/__METADATA__"},
         "items": {"$ref": "#/definitions/TypeReference10"}
       },
@@ -363,6 +370,7 @@
         },
 
         "structuredExample": {"$ref": "#/definitions/TypeDeclaration/properties/structuredExample"},
+        "allowedTargets": {"$ref": "#/definitions/TypeDeclaration/properties/allowedTargets"},
         "__METADATA__": {"$ref": "#/definitions/TypeDeclaration/properties/__METADATA__"}
       },
       "required": ["name", "displayName", "type", "__METADATA__", "required"],
@@ -401,6 +409,7 @@
         "maxLength": {
           "type": "number"
         },
+        "allowedTargets": {"$ref": "#/definitions/TypeDeclaration/properties/allowedTargets"},
         "__METADATA__": {"$ref": "#/definitions/TypeDeclaration/properties/__METADATA__"}
       },
       "required": ["name", "displayName", "type", "__METADATA__", "required"],
@@ -452,6 +461,7 @@
           },
           "additionalProperties": false
         },
+        "allowedTargets": {"$ref": "#/definitions/TypeDeclaration/properties/allowedTargets"},
         "structuredExample": {"$ref": "#/definitions/TypeDeclaration/properties/structuredExample"},
         "__METADATA__": {"$ref": "#/definitions/TypeDeclaration/properties/__METADATA__"}
       },
@@ -490,6 +500,7 @@
           "type": ["string"]
         },
         "structuredExample": {"$ref": "#/definitions/TypeDeclaration/properties/structuredExample"},
+        "allowedTargets": {"$ref": "#/definitions/TypeDeclaration/properties/allowedTargets"},
         "__METADATA__": {"$ref": "#/definitions/TypeDeclaration/properties/__METADATA__"}
       },
       "required": ["name", "displayName", "type", "__METADATA__", "required"],
@@ -534,6 +545,7 @@
         "xml": {"$ref": "#/definitions/TypeDeclaration/properties/xml"},
         "example": {"$ref": "#/definitions/TypeDeclaration/properties/example"},
         "structuredExample": {"$ref": "#/definitions/TypeDeclaration/properties/structuredExample"},
+        "allowedTargets": {"$ref": "#/definitions/TypeDeclaration/properties/allowedTargets"},
         "__METADATA__": {"$ref": "#/definitions/TypeDeclaration/properties/__METADATA__"}
       },
       "required": ["name", "displayName", "schema", "__METADATA__", "required"],
@@ -557,6 +569,12 @@
           "type": "object",
           "patternProperties": {
             "^[a-zA-Z0-9]+": {"$ref": "#/definitions/Type"}
+          }
+        },
+        "allowedTargets": {
+          "type": "array",
+          "items": {
+            "type": "string"
           }
         },
         "discriminator": {
@@ -686,7 +704,7 @@
         "annotations": {
           "type": "object",
           "patternProperties": {
-            "^[a-zA-Z0-9]+": {"$ref": "#/definitions/AnnotationReference"}
+            "^[a-zA-Z0-9]+": {"$ref": "#/definitions/AnnotationInstance"}
           }
         },
         "scalarsAnnotations": {
@@ -696,7 +714,7 @@
       "additionalProperties": false
     },
 
-    "AnnotationReference": {
+    "AnnotationInstance": {
       "type": "object",
       "properties": {
         "name": {
