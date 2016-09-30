@@ -12,7 +12,7 @@
     {"$ref": "#/definitions/RAML10ExampleSpec"},
     {"$ref": "#/definitions/RAML10ResourceType"},
 
-    {"$ref": "#/definitions/RAML08"}
+    {"$ref": "#/definitions/RAML08Api"}
   ],
   "definitions": {
     "RAML10": {
@@ -1199,10 +1199,24 @@
       "type": "object",
       "properties": {
         "annotations": {
-          "type": "object",
-          "patternProperties": {
-            "^[a-zA-Z0-9]+": {"$ref": "#/definitions/AnnotationInstance"}
-          }
+          "oneOf": [
+             {
+              "type": "object",
+              "patternProperties": {
+                "^[a-zA-Z0-9]+": {"$ref": "#/definitions/AnnotationInstance"}
+              }
+            },
+            {
+              "type": "object",
+              "patternProperties": {
+                "^[a-zA-Z0-9]+": {
+                  "type": "array",
+                  "items": {"$ref": "#/definitions/AnnotationInstance"}
+                }
+              }
+            }
+          ]
+
         },
         "scalarsAnnotations": {
           "type": "object",
@@ -1370,23 +1384,31 @@
     },
 
     "SecuritySchemeDeclaration": {
-      "oneOf": [
-        {"$ref": "#/definitions/OAuth10SecurityScheme10"},
-        {"$ref": "#/definitions/OAuth20SecurityScheme10"},
-        {"$ref": "#/definitions/PassThroughSecurityScheme10"},
-        {"$ref": "#/definitions/BasicSecurityScheme10"},
-        {"$ref": "#/definitions/DigestSecurityScheme10"},
+      "anyOf": [
+        {
+          "oneOf": [
+            {"$ref": "#/definitions/OAuth10SecurityScheme10"},
+            {"$ref": "#/definitions/OAuth20SecurityScheme10"},
+            {"$ref": "#/definitions/PassThroughSecurityScheme10"},
+            {"$ref": "#/definitions/BasicSecurityScheme10"},
+            {"$ref": "#/definitions/DigestSecurityScheme10"}
+          ]
+        },
         {"$ref": "#/definitions/CustomSecurityScheme10"}
       ]
     },
 
     "SecuritySchemeFragment": {
-      "oneOf": [
-        {"$ref": "#/definitions/OAuth10SecuritySchemeFragment10"},
-        {"$ref": "#/definitions/OAuth20SecuritySchemeFragment10"},
-        {"$ref": "#/definitions/PassThroughSecuritySchemeFragment10"},
-        {"$ref": "#/definitions/BasicSecuritySchemeFragment10"},
-        {"$ref": "#/definitions/DigestSecuritySchemeFragment10"},
+      "anyOf": [
+        {
+          "oneOf": [
+            {"$ref": "#/definitions/OAuth10SecuritySchemeFragment10"},
+            {"$ref": "#/definitions/OAuth20SecuritySchemeFragment10"},
+            {"$ref": "#/definitions/PassThroughSecuritySchemeFragment10"},
+            {"$ref": "#/definitions/BasicSecuritySchemeFragment10"},
+            {"$ref": "#/definitions/DigestSecuritySchemeFragment10"}
+          ]
+        },
         {"$ref": "#/definitions/CustomSecuritySchemeFragment10"}
       ]
     },
@@ -1508,8 +1530,7 @@
       "type": "object",
       "properties": {
         "type": {
-          "type": "string",
-          "pattern": "^x-[a-zA-Z0-9]+"
+          "type": "string"
         },
         "name": {"$ref": "#/definitions/SecurityScheme10/properties/name"},
         "settings": {"$ref": "#/definitions/CustomSecuritySettings10"},
@@ -1839,13 +1860,894 @@
     },
 
     "RAML08": {
-      "type": "object",
       "properties": {
         "ramlVersion": {
           "type": "string",
           "pattern": "RAML08"
+        },
+        "errors": {
+          "type": "array",
+          "items": {"$ref": "#/definitions/Error"}
         }
-      }
+      },
+      "additionalProperties": false
+    },
+    "RAML08Api": {
+      "type": "object",
+      "properties": {
+        "ramlVersion": {"$ref": "#/definitions/RAML08/properties/ramlVersion"},
+        "type":{
+          "type": "string",
+          "pattern": "Api"
+        },
+        "specification":{
+          "type": "object",
+          "properties":{
+            "title": {
+              "type": "string"
+            },
+            "version": {
+              "type": "string"
+            },
+            "baseUri": {
+              "type": "string"
+            },
+            "baseUriParameters": {
+              "type": "object",
+              "patternProperties": {
+                "^[a-zA-Z0-9]+": {
+                  "oneOf":[
+                    {"$ref": "#/definitions/Parameter08"},
+                    {
+                      "type": "array",
+                      "items": {"$ref": "#/definitions/Parameter08"}
+                    }
+                  ]
+                }
+              },
+              "additionalProperties": false
+            },
+            "uriParameters": {
+              "type": "object",
+              "patternProperties": {
+                "^[a-zA-Z0-9]+": {
+                  "oneOf":[
+                    {"$ref": "#/definitions/Parameter08"},
+                    {
+                      "type": "array",
+                      "items": {"$ref": "#/definitions/Parameter08"}
+                    }
+                  ]
+                }
+              },
+              "additionalProperties": false
+            },
+            "protocols":{
+              "type": "array",
+              "items":{
+                "type": "string"
+              }
+            },
+            "mediaType": {
+              "type": "string"
+            },
+            "schemas":{
+              "type": "array",
+              "items":{
+                "$ref": "#/definitions/GlobalSchema"
+              }
+            },
+            "traits":{
+              "type": "array",
+              "items":{
+                "$ref": "#/definitions/Trait"
+              }
+            },
+            "securedBy":{
+              "type": "array",
+              "items":{
+                "$ref": "#/definitions/Reference08"
+              }
+            },
+            "securitySchemes":{
+              "type": "array",
+              "items":{
+                "$ref": "#/definitions/AbstractSecurityScheme08"
+              }
+            },
+            "resourceTypes":{
+              "type": "array",
+              "items":{
+                "$ref": "#/definitions/ResourceType08"
+              }
+            },
+            "resources":{
+              "type": "array",
+              "items":{
+                "$ref": "#/definitions/Resource08"
+              }
+            },
+            "documentation":{
+              "type": "array",
+              "items":{
+                "$ref": "#/definitions/DocumentationItem08"
+              }
+            },
+            "__METADATA__": {"$ref": "#/definitions/TypeDeclaration/properties/__METADATA__"}
+          },
+          "required": ["title"],
+          "additionalProperties": false
+        },
+        "errors": {"$ref": "#/definitions/RAML10/properties/errors"}
+      },
+      "required": ["ramlVersion", "type", "specification", "errors"],
+      "additionalProperties": false
+    },
+    "Parameter08": {
+      "type": "object",
+      "oneOf":[
+        {"$ref": "#/definitions/StringTypeDeclaration08"},
+        {"$ref": "#/definitions/ParameterTypeDeclaration08"},
+        {"$ref": "#/definitions/NumberTypeDeclaration08"}
+      ]
+    },
+    "ParameterBase08":{
+      "type": "object",
+      "properties":{
+        "name":{
+          "type": "string"
+        },
+        "displayName":{
+          "type": "string"
+        },
+        "type":{
+          "type": "string"
+        },
+        "location":{
+          "type": "string",
+          "enum":["QUERY","HEADERS","URI","FORM","BURI"]
+        },
+        "required":{
+          "type": "boolean"
+        },
+        "default":{
+          "type": ["array", "boolean", "integer", "number", "null", "object", "string"]
+        },
+        "example":{
+          "type": "string"
+        },
+        "repeat":{
+          "type": "boolean"
+        },
+        "description":{
+          "type": "string"
+        },
+        "__METADATA__": {"$ref": "#/definitions/TypeDeclaration/properties/__METADATA__"}
+      },
+      "required": ["name"],
+      "additionalProperties": false
+    },
+    "StringTypeDeclaration08":{
+      "type": "object",
+      "properties":{
+        "type": {
+          "type": "string",
+          "enum":["string"]
+        },
+        "pattern": {
+          "type": "string"
+        },
+        "enum": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "minLength": {
+          "type": "number"
+        },
+        "maxLength": {
+          "type": "number"
+        },
+        "name": {"$ref": "#/definitions/ParameterBase08/properties/name"},
+        "displayName": {"$ref": "#/definitions/ParameterBase08/properties/displayName"},
+        "location": {"$ref": "#/definitions/ParameterBase08/properties/location"},
+        "required": {"$ref": "#/definitions/ParameterBase08/properties/required"},
+        "default": {"$ref": "#/definitions/ParameterBase08/properties/default"},
+        "example": {"$ref": "#/definitions/ParameterBase08/properties/example"},
+        "repeat": {"$ref": "#/definitions/ParameterBase08/properties/repeat"},
+        "description": {"$ref": "#/definitions/ParameterBase08/properties/description"},
+        "__METADATA__": {"$ref": "#/definitions/ParameterBase08/properties/__METADATA__"}
+      },
+      "required": ["name"],
+      "additionalProperties": false
+    },
+    "ParameterTypeDeclaration08":{
+      "type": "object",
+      "properties":{
+        "type": {
+          "type": "string",
+          "enum":["boolean", "date", "file"]
+        },
+        "name": {"$ref": "#/definitions/ParameterBase08/properties/name"},
+        "displayName": {"$ref": "#/definitions/ParameterBase08/properties/displayName"},
+        "location": {"$ref": "#/definitions/ParameterBase08/properties/location"},
+        "required": {"$ref": "#/definitions/ParameterBase08/properties/required"},
+        "default": {"$ref": "#/definitions/ParameterBase08/properties/default"},
+        "example": {"$ref": "#/definitions/ParameterBase08/properties/example"},
+        "repeat": {"$ref": "#/definitions/ParameterBase08/properties/repeat"},
+        "description": {"$ref": "#/definitions/ParameterBase08/properties/description"},
+        "__METADATA__": {"$ref": "#/definitions/ParameterBase08/properties/__METADATA__"}
+      },
+      "required": ["name"],
+      "additionalProperties": false
+    },
+    "NumberTypeDeclaration08":{
+      "type": "object",
+      "properties":{
+        "type": {
+          "type": "string",
+          "enum":["number", "integer"]
+        },
+        "minimum": {
+          "type": "number"
+        },
+        "maximum": {
+          "type": "number"
+        },
+        "name": {"$ref": "#/definitions/ParameterBase08/properties/name"},
+        "displayName": {"$ref": "#/definitions/ParameterBase08/properties/displayName"},
+        "location": {"$ref": "#/definitions/ParameterBase08/properties/location"},
+        "required": {"$ref": "#/definitions/ParameterBase08/properties/required"},
+        "default": {"$ref": "#/definitions/ParameterBase08/properties/default"},
+        "example": {"$ref": "#/definitions/ParameterBase08/properties/example"},
+        "repeat": {"$ref": "#/definitions/ParameterBase08/properties/repeat"},
+        "description": {"$ref": "#/definitions/ParameterBase08/properties/description"},
+        "__METADATA__": {"$ref": "#/definitions/ParameterBase08/properties/__METADATA__"}
+      },
+      "required": ["name"],
+      "additionalProperties": false
+    },
+    "GlobalSchema": {
+      "type": "object",
+      "patternProperties": {
+        "^[a-zA-Z0-9]+":{
+          "type": "string"
+        }
+      },
+      "additionalProperties": false
+    },
+    "Trait": {
+      "type": "object",
+      "patternProperties": {
+        "^[a-zA-Z0-9]+":{
+          "type": "object",
+          "properties": {
+            "responses": {"$ref": "#/definitions/MethodBase08/properties/responses"},
+            "body": {"$ref": "#/definitions/MethodBase08/properties/body"},
+            "protocols": {"$ref": "#/definitions/MethodBase08/properties/protocols"},
+            "securedBy": {"$ref": "#/definitions/MethodBase08/properties/securedBy"},
+            "baseUriParameters": {"$ref": "#/definitions/MethodBase08/properties/baseUriParameters"},
+            "queryParameters": {"$ref": "#/definitions/MethodBase08/properties/queryParameters"},
+            "headers": {"$ref": "#/definitions/MethodBase08/properties/headers"},
+            "description": {"$ref": "#/definitions/MethodBase08/properties/description"},
+            "name":{
+              "type": "string"
+            },
+            "usage":{
+              "type": "string"
+            },
+            "displayName":{
+              "type": "string"
+            },
+            "isScalar": {"$ref": "#/definitions/TypeInstance08/properties/isScalar"},
+            "properties": {"$ref": "#/definitions/TypeInstance08/properties/properties"},
+            "__METADATA__": {"$ref": "#/definitions/TypeDeclaration/properties/__METADATA__"}
+          },
+          "patternProperties":{
+            "^[a-zA-Z0-9<>]+": {"$ref": "#/definitions/TypeInstance08/properties/value"}
+          },
+          "required": ["name"],
+          "additionalProperties": false
+        }
+      },
+      "additionalProperties": false
+    },
+    "Reference08":{
+      "oneOf": [
+        {"type":"string"},
+        {
+          "type": "object",
+          "patternProperties":{
+            "^[a-zA-Z0-9<>]+": {
+              "type": "object",
+              "patternProperties":{
+                "^[a-zA-Z0-9<>]+":{
+                  "type": ["array", "boolean", "integer", "number", "null","object","string"]
+                }
+              },
+              "additionalProperties": false
+            }
+          },
+          "additionalProperties": false
+        }
+      ]
+    },
+    "TypeInstance08":{
+      "type": "object",
+      "properties":{
+        "properties":{
+          "type": "array",
+          "items":{
+            "$ref": "#/definitions/TypeInstanceProperty08"
+          }
+        },
+        "isScalar":{
+          "type": "boolean"
+        },
+        "value":{
+          "type": ["array", "boolean", "integer", "number", "null","object","string"]
+        }
+      },
+      "additionalProperties": false
+    },
+    "TypeInstanceProperty08":{
+      "type": "object",
+      "properties":{
+        "name":{
+          "type": "string"
+        },
+        "value": {"$ref": "#/definitions/TypeInstance08"},
+        "values":{
+          "type": "array",
+          "items":{
+            "$ref": "#/definitions/TypeInstance08"
+          }
+        },
+        "isArray":{
+          "type": "boolean"
+        }
+      },
+      "additionalProperties": false
+    },
+    "Resource08": {
+      "type": "object",
+      "properties":{
+        "relativeUri":{
+          "type": "string"
+        },
+        "relativeUriPathSegments":{
+          "type": "array",
+          "items":{
+            "type": "string"
+          }
+        },
+        "type":{"$ref": "#/definitions/Reference08"},
+        "is":{
+          "type": "array",
+          "items":{
+            "$ref": "#/definitions/Reference08"
+          }
+        },
+        "securedBy":{
+          "type": "array",
+          "items":{
+            "$ref": "#/definitions/Reference08"
+          }
+        },
+        "uriParameters":{
+          "type": "object",
+          "patternProperties": {
+            "^[a-zA-Z0-9<>]+": {
+              "oneOf":[
+                {"$ref": "#/definitions/Parameter08"},
+                {
+                  "type": "array",
+                  "items": {"$ref": "#/definitions/Parameter08"}
+                }
+              ]
+            }
+          },
+          "additionalProperties": false
+        },
+        "methods":{
+          "type": "array",
+          "items":{
+            "$ref": "#/definitions/Method08"
+          },
+          "additionalProperties": false
+        },
+        "resources":{
+          "type": "array",
+          "items":{
+            "$ref": "#/definitions/Resource08"
+          }
+        },
+        "displayName":{
+          "type": "string"
+        },
+        "baseUriParameters":{
+          "type": "object",
+          "patternProperties": {
+            "^[a-zA-Z0-9<>]+": {
+              "oneOf":[
+                {"$ref": "#/definitions/Parameter08"},
+                {
+                  "type": "array",
+                  "items": {"$ref": "#/definitions/Parameter08"}
+                }
+              ]
+            }
+          },
+          "additionalProperties": false
+        },
+        "description":{
+          "type": "string"
+        },
+        "__METADATA__": {"$ref": "#/definitions/TypeDeclaration/properties/__METADATA__"}
+      },
+      "additionalProperties": false
+    },
+    "DocumentationItem08": {
+      "type": "object",
+      "properties":{
+        "title":{
+          "type": "string"
+        },
+        "content":{
+          "type": "string"
+        }
+      },
+      "additionalProperties": false
+    },
+    "AbstractSecurityScheme08": {
+      "oneOf":[
+        {"$ref": "#/definitions/OAuth2SecurityScheme08"},
+        {"$ref": "#/definitions/OAuth1SecurityScheme08"},
+        {"$ref": "#/definitions/BasicSecurityScheme08"},
+        {"$ref": "#/definitions/DigestSecurityScheme08"},
+        {"$ref": "#/definitions/CustomSecurityScheme08"}
+      ]
+    },
+    "SecuritySchemeBase08":{
+      "type": "object",
+      "properties": {
+        "name":{
+          "type": "string"
+        },
+        "type":{
+          "type": "string"
+        },
+        "description":{
+          "type": "string"
+        },
+        "describedBy":{"$ref": "#/definitions/SecuritySchemePart08"},
+        "settings":{
+          "type": "object"
+        }
+      },
+      "additionalProperties": false
+    },
+    "SecuritySchemePart08": {
+      "type":"object",
+      "properties":{
+        "responses": {"$ref": "#/definitions/MethodBase08/properties/responses"},
+        "body": {"$ref": "#/definitions/MethodBase08/properties/body"},
+        "protocols": {"$ref": "#/definitions/MethodBase08/properties/protocols"},
+        "securedBy": {"$ref": "#/definitions/MethodBase08/properties/securedBy"},
+        "baseUriParameters": {"$ref": "#/definitions/MethodBase08/properties/baseUriParameters"},
+        "queryParameters": {"$ref": "#/definitions/MethodBase08/properties/queryParameters"},
+        "headers": {"$ref": "#/definitions/MethodBase08/properties/headers"},
+        "description": {"$ref": "#/definitions/MethodBase08/properties/description"},
+        "method":{
+          "type": "string"
+        },
+        "is":{
+          "type": "array",
+          "items":{
+            "$ref": "#/definitions/Reference08"
+          }
+        },
+        "__METADATA__": {"$ref": "#/definitions/TypeDeclaration/properties/__METADATA__"}
+      },
+      "additionalProperties": false
+    },
+    "OAuth2SecurityScheme08":{
+      "type": "object",
+      "patternProperties": {
+        "^[a-zA-Z0-9]+":{
+          "type": "object",
+          "properties": {
+            "name":{"$ref": "#/definitions/SecuritySchemeBase08/properties/name"},
+            "type":{
+              "type": "string",
+              "pattern": "OAuth 2.0"
+            },
+            "description":{"$ref": "#/definitions/SecuritySchemeBase08/properties/description"},
+            "describedBy":{"$ref": "#/definitions/SecuritySchemeBase08/properties/describedBy"},
+            "settings":{
+              "type": "object",
+              "properties":{
+                "accessTokenUri":{
+                  "type":"string"
+                },
+                "authorizationUri":{
+                  "type":"string"
+                },
+                "authorizationGrants":{
+                  "type":"array",
+                  "items":{
+                    "type":"string"
+                  }
+                },
+                "scopes":{
+                  "type":"array",
+                  "items":{
+                    "type":"string"
+                  }
+                }
+              },
+              "additionalProperties": false
+            }
+          },
+          "additionalProperties": false
+        }
+      },
+      "additionalProperties": false
+    },
+    "OAuth1SecurityScheme08":{
+      "type": "object",
+      "patternProperties": {
+        "^[a-zA-Z0-9]+":{
+          "type": "object",
+          "properties": {
+            "name":{"$ref": "#/definitions/SecuritySchemeBase08/properties/name"},
+            "type":{
+              "type": "string",
+              "pattern": "OAuth 1.0"
+            },
+            "description":{"$ref": "#/definitions/SecuritySchemeBase08/properties/description"},
+            "describedBy":{"$ref": "#/definitions/SecuritySchemeBase08/properties/describedBy"},
+            "settings":{
+              "type": "object",
+              "properties":{
+                "requestTokenUri":{
+                  "type":"string"
+                },
+                "authorizationUri":{
+                  "type":"string"
+                },
+                "tokenCredentialsUri":{
+                  "type":"string"
+                }
+              },
+              "additionalProperties": false
+            }
+          },
+          "additionalProperties": false
+        }
+      },
+      "additionalProperties": false
+    },
+    "BasicSecurityScheme08":{
+      "type": "object",
+      "patternProperties": {
+        "^[a-zA-Z0-9]+":{
+          "type": "object",
+          "properties": {
+            "name":{"$ref": "#/definitions/SecuritySchemeBase08/properties/name"},
+            "type":{
+              "type": "string",
+              "pattern": "Basic Authentication"
+            },
+            "description":{"$ref": "#/definitions/SecuritySchemeBase08/properties/description"},
+            "describedBy":{"$ref": "#/definitions/SecuritySchemeBase08/properties/describedBy"},
+            "settings":{"$ref": "#/definitions/SecuritySchemeBase08/properties/settings"}
+          },
+          "additionalProperties": false
+        }
+      },
+      "additionalProperties": false
+    },
+    "DigestSecurityScheme08":{
+      "type": "object",
+      "patternProperties": {
+        "^[a-zA-Z0-9]+":{
+          "type": "object",
+          "properties": {
+            "name":{"$ref": "#/definitions/SecuritySchemeBase08/properties/name"},
+            "type":{
+              "type": "string",
+              "pattern": "Digest Authentication"
+            },
+            "description":{"$ref": "#/definitions/SecuritySchemeBase08/properties/description"},
+            "describedBy":{"$ref": "#/definitions/SecuritySchemeBase08/properties/describedBy"},
+            "settings":{"$ref": "#/definitions/SecuritySchemeBase08/properties/settings"}
+          },
+          "additionalProperties": false
+        }
+      },
+      "additionalProperties": false
+    },
+    "CustomSecurityScheme08":{
+      "type": "object",
+      "patternProperties": {
+        "^[a-zA-Z0-9]+":{
+          "type": "object",
+          "properties": {
+            "name":{"$ref": "#/definitions/SecuritySchemeBase08/properties/name"},
+            "type":{
+              "type": "string",
+              "pattern": "x-[a-zA-Z0-9<>]+"
+            },
+            "description":{"$ref": "#/definitions/SecuritySchemeBase08/properties/description"},
+            "describedBy":{"$ref": "#/definitions/SecuritySchemeBase08/properties/describedBy"},
+            "settings":{"$ref": "#/definitions/SecuritySchemeBase08/properties/settings"}
+          },
+          "additionalProperties": false
+        }
+      },
+      "additionalProperties": false
+    },
+    "ResourceType08": {
+      "type": "object",
+      "patternProperties":{
+        "^[a-zA-Z0-9<>]+":{
+          "type": "object",
+          "properties":{
+            "name":{
+              "type": "string"
+            },
+            "usage":{
+              "type": "string"
+            },
+            "is":{
+              "type": "array",
+              "items":{
+                "$ref": "#/definitions/Reference08"
+              }
+            },
+            "type":{"$ref": "#/definitions/Reference08"},
+            "securedBy":{
+              "type": "array",
+              "items":{
+                "$ref": "#/definitions/Reference08"
+              }
+            },
+            "uriParameters":{
+              "type": "object",
+              "patternProperties": {
+                "^[a-zA-Z0-9<>]+": {
+                  "oneOf":[
+                    {"$ref": "#/definitions/Parameter08"},
+                    {
+                      "type": "array",
+                      "items": {"$ref": "#/definitions/Parameter08"}
+                    }
+                  ]
+                }
+              },
+              "additionalProperties": false
+            },
+            "displayName":{
+              "type": "string"
+            },
+            "baseUriParameters": {
+              "type": "object",
+              "patternProperties": {
+                "^[a-zA-Z0-9<>]+": {
+                  "oneOf": [
+                    {
+                      "$ref": "#/definitions/Parameter08"
+                    },
+                    {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/definitions/Parameter08"
+                      }
+                    }
+                  ]
+                }
+              }
+            },
+            "description":{
+              "type": "string"
+            },
+            "isScalar": {"$ref": "#/definitions/TypeInstance08/properties/isScalar"},
+            "properties+": {
+              "$ref": "#/definitions/TypeInstance08/properties/properties"
+            },
+            "__METADATA__": {"$ref": "#/definitions/TypeDeclaration/properties/__METADATA__"}
+          },
+          "patternProperties":{
+            "^(get|post|delete|put|patch|options|head|<<[a-zA-Z0-9]+>>)?$": {
+              "$ref": "#/definitions/Method08"
+            }
+          },
+          "additionalProperties": false
+        }
+      },
+      "additionalProperties": false
+    },
+    "Response08":{
+      "type": "object",
+      "properties":{
+        "code":{
+          "type": "string"
+        },
+        "headers":{
+          "type": "object",
+          "patternProperties": {
+            "^[a-zA-Z0-9<>]+": {
+              "oneOf":[
+                {"$ref": "#/definitions/Parameter08"},
+                {
+                  "type": "array",
+                  "items": {"$ref": "#/definitions/Parameter08"}
+                }
+              ]
+            }
+          },
+          "additionalProperties": false
+        },
+        "body":{
+          "type": "object",
+          "patternProperties": {
+            "^[a-zA-Z0-9<>]+": {"$ref": "#/definitions/BodyLike08"}
+          },
+          "additionalProperties": false
+        },
+        "description":{
+          "type": "string"
+        }
+      },
+      "additionalProperties": false
+    },
+    "BodyLike08":{
+      "type": "object",
+      "properties":{
+        "name":{
+          "type": "string"
+        },
+        "schema":{
+          "type": "string"
+        },
+        "example":{
+          "type": ["string", "integer", "number", "boolean"]
+        },
+        "formParameters":{
+          "type": "object",
+          "patternProperties": {
+            "^[a-zA-Z0-9<>]+": {
+              "oneOf":[
+                {"$ref": "#/definitions/Parameter08"},
+                {
+                  "type": "array",
+                  "items": {"$ref": "#/definitions/Parameter08"}
+                }
+              ]
+            }
+          },
+          "additionalProperties": false
+        },
+        "schemaContent":{
+          "type": "string"
+        },
+        "description":{
+          "type": "string"
+        }
+      },
+      "additionalProperties": false
+    },
+    "MethodBase08":{
+      "type": "object",
+      "properties":{
+        "responses":{
+          "type": "object",
+          "patternProperties": {
+            "^[a-zA-Z0-9<>]+": {"$ref": "#/definitions/Response08"}
+          },
+          "additionalProperties": false
+        },
+        "body":{
+          "type": "object",
+          "patternProperties": {
+            "^[a-zA-Z0-9<>]+":{
+              "oneOf":[
+                {"$ref": "#/definitions/BodyLike08"},
+                {"type":["null"]}
+              ]
+            }
+          },
+          "additionalProperties": false
+        },
+        "protocols":{
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "securedBy":{
+          "type": "array",
+          "items":{
+            "$ref": "#/definitions/Reference08"
+          }
+        },
+        "baseUriParameters":{
+          "type": "object",
+          "patternProperties": {
+            "^[a-zA-Z0-9<>]+": {
+              "oneOf":[
+                {"$ref": "#/definitions/Parameter08"},
+                {
+                  "type": "array",
+                  "items": {"$ref": "#/definitions/Parameter08"}
+                }
+              ]
+            }
+          },
+          "additionalProperties": false
+        },
+        "queryParameters":{
+          "type": "object",
+          "patternProperties": {
+            "^[a-zA-Z0-9<>]+": {
+              "oneOf":[
+                {"$ref": "#/definitions/Parameter08"},
+                {"type":["null"]},
+                {
+                  "type": "array",
+                  "items": {"$ref": "#/definitions/Parameter08"}
+                }
+              ]
+            }
+          },
+          "additionalProperties": false
+        },
+        "headers":{
+          "type": "object",
+          "patternProperties": {
+            "^[a-zA-Z0-9<>]+": {
+              "oneOf":[
+                {"$ref": "#/definitions/Parameter08"},
+                {
+                  "type": "array",
+                  "items": {"$ref": "#/definitions/Parameter08"}
+                }
+              ]
+            }
+          },
+          "additionalProperties": false
+        },
+        "description":{
+          "type": "string"
+        }
+      },
+      "additionalProperties": false
+    },
+    "Method08":{
+      "type": "object",
+      "properties":{
+        "responses": {"$ref": "#/definitions/MethodBase08/properties/responses"},
+        "body": {"$ref": "#/definitions/MethodBase08/properties/body"},
+        "protocols": {"$ref": "#/definitions/MethodBase08/properties/protocols"},
+        "securedBy": {"$ref": "#/definitions/MethodBase08/properties/securedBy"},
+        "baseUriParameters": {"$ref": "#/definitions/MethodBase08/properties/baseUriParameters"},
+        "queryParameters": {"$ref": "#/definitions/MethodBase08/properties/queryParameters"},
+        "headers": {"$ref": "#/definitions/MethodBase08/properties/headers"},
+        "description": {"$ref": "#/definitions/MethodBase08/properties/description"},
+        "method":{
+          "type": "string"
+        },
+        "is":{
+          "type": "array",
+          "items":{
+            "$ref": "#/definitions/Reference08"
+          }
+        },
+        "__METADATA__": {"$ref": "#/definitions/TypeDeclaration/properties/__METADATA__"}
+      },
+      "additionalProperties": false
     }
   }
 }
