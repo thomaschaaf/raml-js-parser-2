@@ -22,11 +22,69 @@
           "pattern": "RAML10"
         },
         "errors": {
-          "type": "array"
+          "type": "array",
+          "items": {"$ref": "#/definitions/Error"}
         }
       },
       "additionalProperties": false
     },
+
+    "Error": {
+      "type": "object",
+      "properties": {
+        "code": {
+          "type": "number"
+        },
+        "message": {
+          "type": "string"
+        },
+        "path": {
+          "type": "string"
+        },
+        "isWarning": {
+          "type": "boolean"
+        },
+        "trace": {
+          "type": "array",
+          "items": {"$ref": "#/definitions/Error"}
+        },
+        "range": {"$ref": "#/definitions/ErrorRange"}
+      },
+      "required": ["code", "message", "path", "range"],
+      "additionalProperties": false
+    },
+
+    "ErrorRange": {
+      "type": "object",
+      "properties": {
+        "start": {"$ref": "#/definitions/ErrorPosition"},
+        "end": {"$ref": "#/definitions/ErrorPosition"}
+      },
+      "required": ["start", "end"],
+      "additionalProperties": false
+    },
+
+    "ErrorPosition": {
+      "type": "object",
+      "properties": {
+        "line": {
+          "type": "number"
+        },
+        "column": {
+          "type": "number"
+        },
+        "position": {
+          "type": "number"
+        }
+      },
+      "additionalProperties": false,
+      "required": ["line", "column", "position"]
+    },
+
+    "PatternProperties": {
+      "description": "Template property."
+    },
+
     "RAML10Api": {
       "type": "object",
       "properties": {
@@ -224,7 +282,7 @@
                 "__METADATA__": {"$ref": "#/definitions/Trait10/properties/__METADATA__"},
                 "uses": {"$ref": "#/definitions/Api10/properties/uses"}
               },
-              "additionalProperties": false
+              "additionalProperties": {"$ref": "#/definitions/PatternProperties"}
             }
           },
           "additionalProperties": false
@@ -291,7 +349,7 @@
               "patternProperties": {
                 "^(get|post|delete|put|patch|options)?$": {"$ref": "#/definitions/ResourceBase10/properties/methods"}
               },
-              "additionalProperties": false
+              "additionalProperties": {"$ref": "#/definitions/PatternProperties"}
             }
           },
           "additionalProperties": false
@@ -430,7 +488,7 @@
       "additionalProperties": false
     },
     "Type": {
-      "oneOf": [
+      "anyOf": [
         {
           "anyOf": [
             {"$ref": "#/definitions/TypeDeclaration"},
@@ -477,7 +535,7 @@
         "items": {"$ref": "#/definitions/TypeReference10"}
       },
       "required": ["name", "displayName", "type", "__METADATA__", "required", "items"],
-      "additionalProperties": false
+      "additionalProperties": {"$ref": "#/definitions/PatternProperties"}
     },
     "StringTypeDeclaration": {
       "type": "object",
@@ -509,7 +567,7 @@
         "__METADATA__": {"$ref": "#/definitions/TypeDeclaration/properties/__METADATA__"}
       },
       "required": ["name", "displayName", "type", "__METADATA__", "required"],
-      "additionalProperties": false
+      "additionalProperties": {"$ref": "#/definitions/PatternProperties"}
     },
     "FileTypeDeclaration": {
       "type": "object",
@@ -548,7 +606,7 @@
         "__METADATA__": {"$ref": "#/definitions/TypeDeclaration/properties/__METADATA__"}
       },
       "required": ["name", "displayName", "type", "__METADATA__", "required"],
-      "additionalProperties": false
+      "additionalProperties": {"$ref": "#/definitions/PatternProperties"}
     },
     "NumberTypeDeclaration": {
       "type": "object",
@@ -604,7 +662,7 @@
         "__METADATA__": {"$ref": "#/definitions/TypeDeclaration/properties/__METADATA__"}
       },
       "required": ["name", "displayName", "type", "__METADATA__", "required"],
-      "additionalProperties": false
+      "additionalProperties": {"$ref": "#/definitions/PatternProperties"}
     },
     "DateTypeDeclaration": {
       "type": "object",
@@ -642,7 +700,7 @@
         "__METADATA__": {"$ref": "#/definitions/TypeDeclaration/properties/__METADATA__"}
       },
       "required": ["name", "displayName", "type", "__METADATA__", "required"],
-      "additionalProperties": false
+      "additionalProperties": {"$ref": "#/definitions/PatternProperties"}
     },
     "TypeReference10": {
       "oneOf": [
@@ -687,7 +745,7 @@
         "__METADATA__": {"$ref": "#/definitions/TypeDeclaration/properties/__METADATA__"}
       },
       "required": ["name", "displayName", "schema", "__METADATA__", "required"],
-      "additionalProperties": false
+      "additionalProperties": {"$ref": "#/definitions/PatternProperties"}
     },
     "TypeDeclaration": {
       "type": "object",
@@ -783,7 +841,7 @@
         }
       },
       "required": ["name", "displayName", "type", "__METADATA__", "required"],
-      "additionalProperties": false
+      "additionalProperties": {"$ref": "#/definitions/PatternProperties"}
     },
 
     "BrokenTypeDeclaration": {
@@ -806,7 +864,7 @@
         }
       },
       "required": ["type", "__METADATA__", "required"],
-      "additionalProperties": false
+      "additionalProperties": {"$ref": "#/definitions/PatternProperties"}
     },
 
     "FragmentDeclaration": {
@@ -885,7 +943,7 @@
           "type": "object",
           "patternProperties": {
             "^[a-zA-Z0-9]+": {
-              "oneOf": [
+              "anyOf": [
                 {"$ref": "#/definitions/OAuth10SecuritySettings10"},
                 {"$ref": "#/definitions/OAuth20SecuritySettings10"},
                 {"$ref": "#/definitions/PassThroughSecuritySettings10"},
@@ -920,7 +978,7 @@
           "type": "string"
         }
       },
-      "additionalProperties": false,
+      "additionalProperties": {"$ref": "#/definitions/PatternProperties"},
       "required": ["code"]
     },
     "Trait10": {
@@ -946,7 +1004,7 @@
         "body": {"$ref": "#/definitions/MethodBase10/properties/body"},
         "__METADATA__": {"$ref": "#/definitions/MethodBase10/properties/__METADATA__"}
       },
-      "additionalProperties": false,
+      "additionalProperties": {"$ref": "#/definitions/PatternProperties"},
       "required": ["name"]
     },
     "Method10": {
@@ -968,7 +1026,7 @@
         },
         "__METADATA__": {"$ref": "#/definitions/MethodBase10/properties/__METADATA__"}
       },
-      "additionalProperties": false,
+      "additionalProperties": {"$ref": "#/definitions/PatternProperties"},
       "require": ["method"]
     },
     "MethodBase10": {
@@ -1102,7 +1160,7 @@
         "^(get|post|delete|put|patch|options)?$": {"$ref": "#/definitions/ResourceBase10/properties/methods"}
       },
       "required": ["name"],
-      "additionalProperties": false
+      "additionalProperties": {"$ref": "#/definitions/PatternProperties"}
     },
 
     "ResourceBase10": {
@@ -1170,7 +1228,7 @@
         }
       },
       "required": ["name", "structuredValue"],
-      "additionalProperties": false
+      "additionalProperties": {"$ref": "#/definitions/PatternProperties"}
     },
 
     "ExampleSpec10": {
@@ -1198,7 +1256,7 @@
         }
       },
       "required": ["value", "strict"],
-      "additionalProperties": false
+      "additionalProperties": {"$ref": "#/definitions/PatternProperties"}
     },
     "Documentation": {
       "type": "array",
@@ -1239,7 +1297,7 @@
         "annotations": {"$ref": "#/definitions/Annotable/properties/annotations"},
         "scalarsAnnotations": {"$ref": "#/definitions/Annotable/properties/scalarsAnnotations"}
       },
-      "additionalProperties": false
+      "additionalProperties": {"$ref": "#/definitions/PatternProperties"}
     },
 
     "OAuth20SecuritySettings10": {
@@ -1272,7 +1330,7 @@
         "annotations": {"$ref": "#/definitions/Annotable/properties/annotations"},
         "scalarsAnnotations": {"$ref": "#/definitions/Annotable/properties/scalarsAnnotations"}
       },
-      "additionalProperties": false
+      "additionalProperties": {"$ref": "#/definitions/PatternProperties"}
     },
 
     "PassThroughSecuritySettings10": {
@@ -1281,7 +1339,7 @@
         "annotations": {"$ref": "#/definitions/Annotable/properties/annotations"},
         "scalarsAnnotations": {"$ref": "#/definitions/Annotable/properties/scalarsAnnotations"}
       },
-      "additionalProperties": false
+      "additionalProperties": {"$ref": "#/definitions/PatternProperties"}
     },
 
     "BasicSecuritySettings10": {
@@ -1290,7 +1348,7 @@
         "annotations": {"$ref": "#/definitions/Annotable/properties/annotations"},
         "scalarsAnnotations": {"$ref": "#/definitions/Annotable/properties/scalarsAnnotations"}
       },
-      "additionalProperties": false
+      "additionalProperties": {"$ref": "#/definitions/PatternProperties"}
     },
 
     "DigestSecuritySettings10": {
@@ -1299,7 +1357,7 @@
         "annotations": {"$ref": "#/definitions/Annotable/properties/annotations"},
         "scalarsAnnotations": {"$ref": "#/definitions/Annotable/properties/scalarsAnnotations"}
       },
-      "additionalProperties": false
+      "additionalProperties": {"$ref": "#/definitions/PatternProperties"}
     },
 
     "CustomSecuritySettings10": {
@@ -1308,7 +1366,7 @@
         "annotations": {"$ref": "#/definitions/Annotable/properties/annotations"},
         "scalarsAnnotations": {"$ref": "#/definitions/Annotable/properties/scalarsAnnotations"}
       },
-      "additionalProperties": false
+      "additionalProperties": {"$ref": "#/definitions/PatternProperties"}
     },
 
     "SecuritySchemeDeclaration": {
