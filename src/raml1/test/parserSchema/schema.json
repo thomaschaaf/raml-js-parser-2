@@ -204,7 +204,30 @@
         },
         "errors": {"$ref": "#/definitions/RAML10/properties/errors"},
         "specification": {
-          "type": "object"
+          "type": "object",
+          "properties": {
+            "undefined": {
+              "type": "object",
+              "properties": {
+                "name": {"$ref": "#/definitions/Trait10/properties/name"},
+                "displayName": {"$ref": "#/definitions/Trait10/properties/displayName"},
+                "description": {"$ref": "#/definitions/Trait10/properties/description"},
+                "usage": {"$ref": "#/definitions/Trait10/properties/usage"},
+                "annotations": {"$ref": "#/definitions/Trait10/properties/annotations"},
+                "scalarsAnnotations": {"$ref": "#/definitions/Trait10/properties/scalarsAnnotations"},
+                "responses": {"$ref": "#/definitions/Trait10/properties/responses"},
+                "headers": {"$ref": "#/definitions/Trait10/properties/headers"},
+                "queryParameters": {"$ref": "#/definitions/Trait10/properties/queryParameters"},
+                "protocols": {"$ref": "#/definitions/Trait10/properties/protocols"},
+                "securedBy":{"$ref": "#/definitions/Trait10/properties/securedBy"},
+                "body": {"$ref": "#/definitions/Trait10/properties/body"},
+                "__METADATA__": {"$ref": "#/definitions/Trait10/properties/__METADATA__"},
+                "uses": {"$ref": "#/definitions/Api10/properties/uses"}
+              },
+              "additionalProperties": false
+            }
+          },
+          "additionalProperties": false
         }
       },
       "required": ["ramlVersion", "type", "errors", "specification"],
@@ -220,7 +243,20 @@
         },
         "errors": {"$ref": "#/definitions/RAML10/properties/errors"},
         "specification": {
-          "type": "object"
+          "type": "object",
+          "properties": {
+            "value": {"$ref": "#/definitions/ExampleSpec10/properties/value"},
+            "strict": {"$ref": "#/definitions/ExampleSpec10/properties/strict"},
+            "name": {"$ref": "#/definitions/ExampleSpec10/properties/name"},
+            "description": {"$ref": "#/definitions/ExampleSpec10/properties/description"},
+            "displayName": {"$ref": "#/definitions/ExampleSpec10/properties/displayName"},
+            "annotations": {"$ref": "#/definitions/ExampleSpec10/properties/annotations"},
+            "scalarsAnnotations": {"$ref": "#/definitions/ExampleSpec10/properties/scalarsAnnotations"},
+            "structuredValue": {"$ref": "#/definitions/ExampleSpec10/properties/structuredValue"},
+            "uses": {"$ref": "#/definitions/FragmentDeclaration/properties/uses"}
+          },
+          "required": ["value", "strict"],
+          "additionalProperties": false
         }
       },
       "required": ["ramlVersion", "type", "errors", "specification"],
@@ -236,7 +272,29 @@
         },
         "errors": {"$ref": "#/definitions/RAML10/properties/errors"},
         "specification": {
-          "type": "object"
+          "type": "object",
+          "properties": {
+            "undefined": {
+              "type": "object",
+              "properties": {
+                "name": {"$ref": "#/definitions/ResourceType10/properties/name"},
+                "description": {"$ref": "#/definitions/ResourceType10/properties/description"},
+                "annotations": {"$ref": "#/definitions/ResourceType10/properties/annotations"},
+                "securedBy": {"$ref": "#/definitions/ResourceType10/properties/securedBy"},
+                "is": {"$ref": "#/definitions/ResourceType10/properties/is"},
+                "type": {"$ref": "#/definitions/ResourceType10/properties/type"},
+                "scalarsAnnotations": {"$ref": "#/definitions/ResourceType10/properties/scalarsAnnotations"},
+                "usage": {"$ref": "#/definitions/ResourceType10/properties/usage"},
+                "__METADATA__": {"$ref": "#/definitions/ResourceType10/properties/__METADATA__"},
+                "uses": {"$ref": "#/definitions/FragmentDeclaration/properties/uses"}
+              },
+              "patternProperties": {
+                "^(get|post|delete|put|patch|options)?$": {"$ref": "#/definitions/ResourceBase10/properties/methods"}
+              },
+              "additionalProperties": false
+            }
+          },
+          "additionalProperties": false
         }
       },
       "required": ["ramlVersion", "type", "errors", "specification"],
