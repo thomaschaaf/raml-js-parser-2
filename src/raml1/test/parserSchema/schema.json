@@ -189,9 +189,7 @@
           "enum": ["SecurityScheme", "OAuth2SecurityScheme"]
         },
         "errors": {"$ref": "#/definitions/RAML10/properties/errors"},
-        "specification": {
-          "type": "object"
-        }
+        "specification": {"$ref": "#/definitions/SecuritySchemeFragment"}
       },
       "required": ["ramlVersion", "type", "errors", "specification"],
       "additionalProperties": false
@@ -417,7 +415,6 @@
         },
         "structuredExample": {"$ref": "#/definitions/TypeDeclaration/properties/structuredExample"},
         "allowedTargets": {"$ref": "#/definitions/TypeDeclaration/properties/allowedTargets"},
-        "uses": {"$ref": "#/definitions/TypeDeclaration/properties/uses"},
         "__METADATA__": {"$ref": "#/definitions/TypeDeclaration/properties/__METADATA__"},
         "items": {"$ref": "#/definitions/TypeReference10"}
       },
@@ -451,7 +448,6 @@
         },
         "structuredExample": {"$ref": "#/definitions/TypeDeclaration/properties/structuredExample"},
         "allowedTargets": {"$ref": "#/definitions/TypeDeclaration/properties/allowedTargets"},
-        "uses": {"$ref": "#/definitions/TypeDeclaration/properties/uses"},
         "__METADATA__": {"$ref": "#/definitions/TypeDeclaration/properties/__METADATA__"}
       },
       "required": ["name", "displayName", "type", "__METADATA__", "required"],
@@ -491,7 +487,6 @@
           "type": "number"
         },
         "allowedTargets": {"$ref": "#/definitions/TypeDeclaration/properties/allowedTargets"},
-        "uses": {"$ref": "#/definitions/TypeDeclaration/properties/uses"},
         "__METADATA__": {"$ref": "#/definitions/TypeDeclaration/properties/__METADATA__"}
       },
       "required": ["name", "displayName", "type", "__METADATA__", "required"],
@@ -548,7 +543,6 @@
         },
         "allowedTargets": {"$ref": "#/definitions/TypeDeclaration/properties/allowedTargets"},
         "structuredExample": {"$ref": "#/definitions/TypeDeclaration/properties/structuredExample"},
-        "uses": {"$ref": "#/definitions/TypeDeclaration/properties/uses"},
         "__METADATA__": {"$ref": "#/definitions/TypeDeclaration/properties/__METADATA__"}
       },
       "required": ["name", "displayName", "type", "__METADATA__", "required"],
@@ -587,7 +581,6 @@
         },
         "structuredExample": {"$ref": "#/definitions/TypeDeclaration/properties/structuredExample"},
         "allowedTargets": {"$ref": "#/definitions/TypeDeclaration/properties/allowedTargets"},
-        "uses": {"$ref": "#/definitions/TypeDeclaration/properties/uses"},
         "__METADATA__": {"$ref": "#/definitions/TypeDeclaration/properties/__METADATA__"}
       },
       "required": ["name", "displayName", "type", "__METADATA__", "required"],
@@ -633,7 +626,6 @@
         "example": {"$ref": "#/definitions/TypeDeclaration/properties/example"},
         "structuredExample": {"$ref": "#/definitions/TypeDeclaration/properties/structuredExample"},
         "allowedTargets": {"$ref": "#/definitions/TypeDeclaration/properties/allowedTargets"},
-        "uses": {"$ref": "#/definitions/TypeDeclaration/properties/uses"},
         "__METADATA__": {"$ref": "#/definitions/TypeDeclaration/properties/__METADATA__"}
       },
       "required": ["name", "displayName", "schema", "__METADATA__", "required"],
@@ -728,7 +720,6 @@
           "type": ["object", "string", "boolean", "number", "array"]
         },
         "structuredExample": {"$ref": "#/definitions/ExampleSpec10"},
-        "uses": {"$ref": "#/definitions/FragmentDeclaration/properties/uses"},
         "__METADATA__": {
           "type": "object"
         }
@@ -1273,6 +1264,17 @@
       ]
     },
 
+    "SecuritySchemeFragment": {
+      "oneOf": [
+        {"$ref": "#/definitions/OAuth10SecuritySchemeFragment10"},
+        {"$ref": "#/definitions/OAuth20SecuritySchemeFragment10"},
+        {"$ref": "#/definitions/PassThroughSecuritySchemeFragment10"},
+        {"$ref": "#/definitions/BasicSecuritySchemeFragment10"},
+        {"$ref": "#/definitions/DigestSecuritySchemeFragment10"},
+        {"$ref": "#/definitions/CustomSecuritySchemeFragment10"}
+      ]
+    },
+
     "SecurityScheme10": {
       "type": "object",
       "properties": {
@@ -1621,6 +1623,102 @@
         "__METADATA__": {"$ref": "#/definitions/TypeDeclaration/properties/__METADATA__"}
       },
       "required": ["type", "__METADATA__", "required"],
+      "additionalProperties": false
+    },
+
+    "OAuth10SecuritySchemeFragment10": {
+      "type": "object",
+      "properties": {
+        "type": {"$ref": "#/definitions/OAuth10SecurityScheme10/properties/type"},
+        "name": {"$ref": "#/definitions/OAuth10SecurityScheme10/properties/name"},
+        "settings": {"$ref": "#/definitions/OAuth10SecurityScheme10/properties/settings"},
+        "annotations": {"$ref": "#/definitions/OAuth10SecurityScheme10/properties/annotations"},
+        "scalarsAnnotations": {"$ref": "#/definitions/SecurityScheme10/properties/scalarsAnnotations"},
+        "describedBy": {"$ref": "#/definitions/OAuth10SecurityScheme10/properties/describedBy"},
+        "description": {"$ref": "#/definitions/OAuth10SecurityScheme10/properties/description"},
+        "uses": {"$ref": "#/definitions/FragmentDeclaration/properties/uses"}
+      },
+      "required": ["type"],
+      "additionalProperties": false
+    },
+
+    "OAuth20SecuritySchemeFragment10": {
+      "type": "object",
+      "properties": {
+        "type": {"$ref": "#/definitions/OAuth20SecurityScheme10/properties/type"},
+        "name": {"$ref": "#/definitions/OAuth20SecurityScheme10/properties/name"},
+        "settings": {"$ref": "#/definitions/OAuth20SecurityScheme10/properties/settings"},
+        "annotations": {"$ref": "#/definitions/OAuth20SecurityScheme10/properties/annotations"},
+        "scalarsAnnotations": {"$ref": "#/definitions/OAuth20SecurityScheme10/properties/scalarsAnnotations"},
+        "describedBy": {"$ref": "#/definitions/OAuth20SecurityScheme10/properties/describedBy"},
+        "description": {"$ref": "#/definitions/OAuth20SecurityScheme10/properties/description"},
+        "uses": {"$ref": "#/definitions/FragmentDeclaration/properties/uses"}
+      },
+      "required": ["type"],
+      "additionalProperties": false
+    },
+
+    "PassThroughSecuritySchemeFragment10": {
+      "type": "object",
+      "properties": {
+        "type": {"$ref": "#/definitions/PassThroughSecurityScheme10/properties/type"},
+        "name": {"$ref": "#/definitions/PassThroughSecurityScheme10/properties/name"},
+        "settings": {"$ref": "#/definitions/PassThroughSecurityScheme10/properties/settings"},
+        "annotations": {"$ref": "#/definitions/PassThroughSecurityScheme10/properties/annotations"},
+        "scalarsAnnotations": {"$ref": "#/definitions/PassThroughSecurityScheme10/properties/scalarsAnnotations"},
+        "describedBy": {"$ref": "#/definitions/PassThroughSecurityScheme10/properties/describedBy"},
+        "description": {"$ref": "#/definitions/PassThroughSecurityScheme10/properties/description"},
+        "uses": {"$ref": "#/definitions/FragmentDeclaration/properties/uses"}
+      },
+      "required": ["type"],
+      "additionalProperties": false
+    },
+
+    "BasicSecuritySchemeFragment10": {
+      "type": "object",
+      "properties": {
+        "type": {"$ref": "#/definitions/BasicSecurityScheme10/properties/type"},
+        "name": {"$ref": "#/definitions/BasicSecurityScheme10/properties/name"},
+        "settings": {"$ref": "#/definitions/BasicSecurityScheme10/properties/settings"},
+        "annotations": {"$ref": "#/definitions/BasicSecurityScheme10/properties/annotations"},
+        "scalarsAnnotations": {"$ref": "#/definitions/BasicSecurityScheme10/properties/scalarsAnnotations"},
+        "describedBy": {"$ref": "#/definitions/BasicSecurityScheme10/properties/describedBy"},
+        "description": {"$ref": "#/definitions/BasicSecurityScheme10/properties/description"},
+        "uses": {"$ref": "#/definitions/FragmentDeclaration/properties/uses"}
+      },
+      "required": ["type"],
+      "additionalProperties": false
+    },
+
+    "DigestSecuritySchemeFragment10": {
+      "type": "object",
+      "properties": {
+        "type": {"$ref": "#/definitions/DigestSecurityScheme10/properties/type"},
+        "name": {"$ref": "#/definitions/DigestSecurityScheme10/properties/name"},
+        "settings": {"$ref": "#/definitions/DigestSecurityScheme10/properties/settings"},
+        "annotations": {"$ref": "#/definitions/DigestSecurityScheme10/properties/annotations"},
+        "scalarsAnnotations": {"$ref": "#/definitions/DigestSecurityScheme10/properties/scalarsAnnotations"},
+        "describedBy": {"$ref": "#/definitions/DigestSecurityScheme10/properties/describedBy"},
+        "description": {"$ref": "#/definitions/DigestSecurityScheme10/properties/description"},
+        "uses": {"$ref": "#/definitions/FragmentDeclaration/properties/uses"}
+      },
+      "required": ["type"],
+      "additionalProperties": false
+    },
+
+    "CustomSecuritySchemeFragment10": {
+      "type": "object",
+      "properties": {
+        "type": {"$ref": "#/definitions/CustomSecurityScheme10/properties/type"},
+        "name": {"$ref": "#/definitions/CustomSecurityScheme10/properties/name"},
+        "settings": {"$ref": "#/definitions/CustomSecurityScheme10/properties/settings"},
+        "annotations": {"$ref": "#/definitions/CustomSecurityScheme10/properties/annotations"},
+        "scalarsAnnotations": {"$ref": "#/definitions/CustomSecurityScheme10/properties/scalarsAnnotations"},
+        "describedBy": {"$ref": "#/definitions/CustomSecurityScheme10/properties/describedBy"},
+        "description": {"$ref": "#/definitions/CustomSecurityScheme10/properties/description"},
+        "uses": {"$ref": "#/definitions/FragmentDeclaration/properties/uses"}
+      },
+      "required": ["type"],
       "additionalProperties": false
     },
 
