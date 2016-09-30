@@ -248,9 +248,7 @@
         },
         "securedBy": {
           "type": "array",
-          "items": {
-            "type": ["string", "null"]
-          }
+          "items": {"$ref": "#/definitions/SecuritySchemeRef10"}
         }
       },
       "additionalProperties": false
@@ -263,7 +261,13 @@
         "annotations": {"$ref": "#/definitions/FragmentDeclaration/properties/annotations"},
         "scalarsAnnotations": {"$ref": "#/definitions/FragmentDeclaration/properties/scalarsAnnotations"},
         "schemas": {
-          "type": "array"
+          "type": "array",
+          "items": {
+            "type": "object",
+            "patternProperties": {
+              "^[a-zA-Z0-9]+": {"$ref": "#/definitions/Type"}
+            }
+          }
         },
         "types": {
           "type": "array",
@@ -293,7 +297,13 @@
           }
         },
         "securitySchemes": {
-          "type": "array"
+          "type": "array",
+          "items": {
+            "type": "object",
+            "patternProperties": {
+              "^[a-zA-Z0-9]+": {"$ref": "#/definitions/SecuritySchemeDeclaration"}
+            }
+          }
         },
         "annotationTypes": {
           "type": "array",
@@ -753,15 +763,27 @@
         }
       ]
     },
-    "SecurityScheme10": {
-      "type": "object"
-    },
+
     "SecuritySchemeRef10": {
       "oneOf": [
         {
           "type": ["string", "null"]
         },
-        {"$ref": "#/definitions/SecurityScheme10"}
+        {
+          "type": "object",
+          "patternProperties": {
+            "^[a-zA-Z0-9]+": {
+              "oneOf": [
+                {"$ref": "#/definitions/OAuth10SecuritySettings10"},
+                {"$ref": "#/definitions/OAuth20SecuritySettings10"},
+                {"$ref": "#/definitions/PassThroughSecuritySettings10"},
+                {"$ref": "#/definitions/BasicSecuritySettings10"},
+                {"$ref": "#/definitions/CustomSecuritySettings10"},
+                {"$ref": "#/definitions/DigestSecuritySettings10"}
+              ]
+            }
+          }
+        }
       ]
     },
     "Response10": {
@@ -879,10 +901,18 @@
         "annotations": {"$ref": "#/definitions/Annotable/properties/annotations"},
         "scalarsAnnotations": {"$ref": "#/definitions/Annotable/properties/scalarsAnnotations"},
         "responses": {
-          "type": "object",
-          "patternProperties": {
-            "^[a-zA-Z0-9]+": {"$ref": "#/definitions/Response10"}
-          }
+          "oneOf": [
+            {
+              "type": "object",
+              "patternProperties": {
+                "^[a-zA-Z0-9]+": {"$ref": "#/definitions/Response10"}
+              }
+            },
+            {
+              "type": "array",
+              "items": {"$ref": "#/definitions/Response10"}
+            }
+          ]
         },
         "headers": {
           "type": "object",
@@ -1075,6 +1105,255 @@
       "required": ["title", "content"],
       "additionalProperties": false
     },
+
+    "OAuth10SecuritySettings10": {
+      "type": "object",
+      "properties": {
+        "signatures": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "requestTokenUri": {
+          "type": "string"
+        },
+        "authorizationUri": {
+          "type": "string"
+        },
+        "tokenCredentialsUri": {
+          "type": "string"
+        },
+        "annotations": {"$ref": "#/definitions/Annotable/properties/annotations"},
+        "scalarsAnnotations": {"$ref": "#/definitions/Annotable/properties/scalarsAnnotations"}
+      },
+      "additionalProperties": false
+    },
+
+    "OAuth20SecuritySettings10": {
+      "type": "object",
+      "properties": {
+        "accessTokenUri": {
+          "type": "string"
+        },
+        "authorizationUri": {
+          "type": "string"
+        },
+        "authorizationGrants": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "scopes": {
+          "oneOf": [
+            {
+              "type": "string"
+            }, {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
+          ]
+        },
+        "annotations": {"$ref": "#/definitions/Annotable/properties/annotations"},
+        "scalarsAnnotations": {"$ref": "#/definitions/Annotable/properties/scalarsAnnotations"}
+      },
+      "additionalProperties": false
+    },
+
+    "PassThroughSecuritySettings10": {
+      "type": "object",
+      "properties": {
+        "annotations": {"$ref": "#/definitions/Annotable/properties/annotations"},
+        "scalarsAnnotations": {"$ref": "#/definitions/Annotable/properties/scalarsAnnotations"}
+      },
+      "additionalProperties": false
+    },
+
+    "BasicSecuritySettings10": {
+      "type": "object",
+      "properties": {
+        "annotations": {"$ref": "#/definitions/Annotable/properties/annotations"},
+        "scalarsAnnotations": {"$ref": "#/definitions/Annotable/properties/scalarsAnnotations"}
+      },
+      "additionalProperties": false
+    },
+
+    "DigestSecuritySettings10": {
+      "type": "object",
+      "properties": {
+        "annotations": {"$ref": "#/definitions/Annotable/properties/annotations"},
+        "scalarsAnnotations": {"$ref": "#/definitions/Annotable/properties/scalarsAnnotations"}
+      },
+      "additionalProperties": false
+    },
+
+    "CustomSecuritySettings10": {
+      "type": "object",
+      "properties": {
+        "annotations": {"$ref": "#/definitions/Annotable/properties/annotations"},
+        "scalarsAnnotations": {"$ref": "#/definitions/Annotable/properties/scalarsAnnotations"}
+      },
+      "additionalProperties": false
+    },
+
+    "SecuritySchemeDeclaration": {
+      "oneOf": [
+        {"$ref": "#/definitions/OAuth10SecurityScheme10"},
+        {"$ref": "#/definitions/OAuth20SecurityScheme10"},
+        {"$ref": "#/definitions/PassThroughSecurityScheme10"},
+        {"$ref": "#/definitions/BasicSecurityScheme10"},
+        {"$ref": "#/definitions/DigestSecurityScheme10"},
+        {"$ref": "#/definitions/CustomSecurityScheme10"}
+      ]
+    },
+
+    "SecurityScheme10": {
+      "type": "object",
+      "properties": {
+        "type": {
+          "type": "string"
+        },
+        "name": {
+          "type": "string"
+        },
+        "settings": {
+          "type": "string"
+        },
+        "description": {
+          "type": "string"
+        },
+        "annotations": {"$ref": "#/definitions/Annotable/properties/annotations"},
+        "scalarsAnnotations": {"$ref": "#/definitions/Annotable/properties/scalarsAnnotations"},
+        "describedBy": {"$ref": "#/definitions/SecuritySchemePart10"}
+      },
+      "required": ["type", "name"],
+      "additionalProperties": false
+    },
+
+    "OAuth10SecurityScheme10": {
+      "type": "object",
+      "properties": {
+        "type": {
+          "type": "string",
+          "pattern": "OAuth 1.0"
+        },
+        "name": {"$ref": "#/definitions/SecurityScheme10/properties/name"},
+        "settings": {"$ref": "#/definitions/OAuth10SecuritySettings10"},
+        "annotations": {"$ref": "#/definitions/SecurityScheme10/properties/annotations"},
+        "scalarsAnnotations": {"$ref": "#/definitions/SecurityScheme10/properties/scalarsAnnotations"},
+        "describedBy": {"$ref": "#/definitions/SecurityScheme10/properties/describedBy"},
+        "description": {"$ref": "#/definitions/SecurityScheme10/properties/description"}
+      },
+      "required": ["type", "name"],
+      "additionalProperties": false
+    },
+
+    "OAuth20SecurityScheme10": {
+      "type": "object",
+      "properties": {
+        "type": {
+          "type": "string",
+          "pattern": "OAuth 2.0"
+        },
+        "name": {"$ref": "#/definitions/SecurityScheme10/properties/name"},
+        "settings": {"$ref": "#/definitions/OAuth20SecuritySettings10"},
+        "annotations": {"$ref": "#/definitions/SecurityScheme10/properties/annotations"},
+        "scalarsAnnotations": {"$ref": "#/definitions/SecurityScheme10/properties/scalarsAnnotations"},
+        "describedBy": {"$ref": "#/definitions/SecurityScheme10/properties/describedBy"},
+        "description": {"$ref": "#/definitions/SecurityScheme10/properties/description"}
+      },
+      "required": ["type", "name"],
+      "additionalProperties": false
+    },
+
+    "PassThroughSecurityScheme10": {
+      "type": "object",
+      "properties": {
+        "type": {
+          "type": "string",
+          "pattern": "Pass Through"
+        },
+        "name": {"$ref": "#/definitions/SecurityScheme10/properties/name"},
+        "settings": {"$ref": "#/definitions/PassThroughSecuritySettings10"},
+        "annotations": {"$ref": "#/definitions/SecurityScheme10/properties/annotations"},
+        "scalarsAnnotations": {"$ref": "#/definitions/SecurityScheme10/properties/scalarsAnnotations"},
+        "describedBy": {"$ref": "#/definitions/SecurityScheme10/properties/describedBy"},
+        "description": {"$ref": "#/definitions/SecurityScheme10/properties/description"}
+      },
+      "required": ["type", "name"],
+      "additionalProperties": false
+    },
+
+    "BasicSecurityScheme10": {
+      "type": "object",
+      "properties": {
+        "type": {
+          "type": "string",
+          "pattern": "Basic Authentication"
+        },
+        "name": {"$ref": "#/definitions/SecurityScheme10/properties/name"},
+        "settings": {"$ref": "#/definitions/BasicSecuritySettings10"},
+        "annotations": {"$ref": "#/definitions/SecurityScheme10/properties/annotations"},
+        "scalarsAnnotations": {"$ref": "#/definitions/SecurityScheme10/properties/scalarsAnnotations"},
+        "describedBy": {"$ref": "#/definitions/SecurityScheme10/properties/describedBy"},
+        "description": {"$ref": "#/definitions/SecurityScheme10/properties/description"}
+      },
+      "required": ["type", "name"],
+      "additionalProperties": false
+    },
+
+    "DigestSecurityScheme10": {
+      "type": "object",
+      "properties": {
+        "type": {
+          "type": "string",
+          "pattern": "Digest Authentication"
+        },
+        "name": {"$ref": "#/definitions/SecurityScheme10/properties/name"},
+        "settings": {"$ref": "#/definitions/DigestSecuritySettings10"},
+        "annotations": {"$ref": "#/definitions/SecurityScheme10/properties/annotations"},
+        "scalarsAnnotations": {"$ref": "#/definitions/SecurityScheme10/properties/scalarsAnnotations"},
+        "describedBy": {"$ref": "#/definitions/SecurityScheme10/properties/describedBy"},
+        "description": {"$ref": "#/definitions/SecurityScheme10/properties/description"}
+      },
+      "required": ["type", "name"],
+      "additionalProperties": false
+    },
+
+    "CustomSecurityScheme10": {
+      "type": "object",
+      "properties": {
+        "type": {
+          "type": "string",
+          "pattern": "^x-[a-zA-Z0-9]+"
+        },
+        "name": {"$ref": "#/definitions/SecurityScheme10/properties/name"},
+        "settings": {"$ref": "#/definitions/CustomSecuritySettings10"},
+        "annotations": {"$ref": "#/definitions/SecurityScheme10/properties/annotations"},
+        "scalarsAnnotations": {"$ref": "#/definitions/SecurityScheme10/properties/scalarsAnnotations"},
+        "describedBy": {"$ref": "#/definitions/SecurityScheme10/properties/describedBy"},
+        "description": {"$ref": "#/definitions/SecurityScheme10/properties/description"}
+      },
+      "required": ["type", "name"],
+      "additionalProperties": false
+    },
+
+    "SecuritySchemePart10": {
+      "type": "object",
+      "properties": {
+        "annotations": {"$ref": "#/definitions/Operation10/properties/annotations"},
+        "scalarsAnnotations": {"$ref": "#/definitions/Operation10/properties/scalarsAnnotations"},
+        "responses": {"$ref": "#/definitions/Operation10/properties/responses"},
+        "headers": {"$ref": "#/definitions/Operation10/properties/headers"},
+        "queryParameters": {"$ref": "#/definitions/Operation10/properties/queryParameters"},
+        "queryString" : {"$ref": "#/definitions/Operation10/properties/queryString"}
+      },
+      "additionalProperties": false
+    },
+
     "RAML08": {
       "type": "object",
       "properties": {
