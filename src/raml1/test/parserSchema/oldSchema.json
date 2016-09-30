@@ -430,13 +430,13 @@
             "schemas":{
               "type": "array",
               "items":{
-                "$ref": "#/definitions/GlobalSchema"
+                "$ref": "#/definitions/GlobalSchema08"
               }
             },
             "traits":{
               "type": "array",
               "items":{
-                "$ref": "#/definitions/Trait"
+                "$ref": "#/definitions/Trait08"
               }
             },
             "securedBy":{
@@ -604,7 +604,7 @@
       "required": ["name"],
       "additionalProperties": false
     },
-    "GlobalSchema": {
+    "GlobalSchema08": {
       "type": "object",
       "patternProperties": {
         "^[a-zA-Z0-9]+":{
@@ -613,7 +613,7 @@
       },
       "additionalProperties": false
     },
-    "Trait": {
+    "Trait08": {
       "type": "object",
       "patternProperties": {
         "^[a-zA-Z0-9]+":{
